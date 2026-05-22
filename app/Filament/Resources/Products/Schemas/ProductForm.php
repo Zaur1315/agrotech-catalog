@@ -119,6 +119,7 @@ final class ProductForm
                             ->image()
                             ->directory('products/main')
                             ->visibility('public')
+                            ->disk('public')
                             ->columnSpanFull(),
 
                         Repeater::make('images')
@@ -129,6 +130,7 @@ final class ProductForm
                                     ->image()
                                     ->directory('products/gallery')
                                     ->visibility('public')
+                                    ->disk('public')
                                     ->required(),
 
                                 TextInput::make('alt')
@@ -147,8 +149,8 @@ final class ProductForm
 
                 Section::make('Attributes')
                     ->schema([
-                        Repeater::make('attributes')
-                            ->relationship('attributes')
+                        Repeater::make('specifications')
+                            ->relationship('specifications')
                             ->schema([
                                 TextInput::make('name')
                                     ->required()

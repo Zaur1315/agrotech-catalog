@@ -61,7 +61,7 @@ final class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
-    public function attributes(): HasMany
+    public function specifications(): HasMany
     {
         return $this->hasMany(ProductAttribute::class)->orderBy('sort_order');
     }
@@ -73,5 +73,22 @@ final class Product extends Model
         }
 
         return '$' . number_format((float)$this->price, 2);
+    }
+
+    public function getMainImageUrlAttribute(): string
+    {
+        if ($this->main_image === null || $this->main_image === '') {
+            return asset('images/placeholders/product-placeholder.jpg');
+        }
+
+        if (str_starts_with($this->main_image, 'http://') || str_starts_with($this->main_image, 'https://')) {
+            return $this->main_image;
+        }
+
+        if (str_starts_with($this->main_image, 'images/placeholders/')) {
+            return asset($this->main_image);
+        }
+
+        return asset('storage/' . ltrim($this->main_image, '/'));
     }
 }

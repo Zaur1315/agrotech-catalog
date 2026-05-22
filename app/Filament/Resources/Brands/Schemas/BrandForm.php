@@ -44,6 +44,7 @@ final class BrandForm
                         FileUpload::make('logo')
                             ->image()
                             ->directory('brands')
+                            ->disk('public')
                             ->visibility('public'),
 
                         Toggle::make('is_active')
