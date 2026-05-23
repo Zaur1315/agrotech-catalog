@@ -25,4 +25,21 @@ final class ProductImage extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function getUrlAttribute(): string
+    {
+        if ($this->path === null || $this->path === '') {
+            return asset('images/placeholders/product-placeholder.jpg');
+        }
+
+        if (str_starts_with($this->path, 'http://') || str_starts_with($this->path, 'https://')) {
+            return $this->path;
+        }
+
+        if (str_starts_with($this->path, 'images/')) {
+            return asset($this->path);
+        }
+
+        return asset('storage/' . ltrim($this->path, '/'));
+    }
 }
