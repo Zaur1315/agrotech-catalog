@@ -1,17 +1,14 @@
 @extends('front.layouts.app', ['title' => $product->name])
 
 @section('content')
-    <section class="border-b bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-8">
-            <div class="text-sm text-slate-500">
-                <a href="{{ route('home') }}" class="hover:text-green-700">Home</a>
-                <span class="mx-2">/</span>
-                <a href="{{ route('catalog.index') }}" class="hover:text-green-700">Catalog</a>
-                <span class="mx-2">/</span>
-                <span>{{ $product->name }}</span>
-            </div>
-        </div>
-    </section>
+    @include('front.components.page-banner', [
+        'title' => $product->name,
+        'description' => $product->short_description,
+        'badge' => 'Equipment details',
+        'statLabel' => 'Price',
+        'statValue' => $product->formatted_price,
+    ])
+
     @if(session('success'))
         <div class="mt-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800">
             {{ session('success') }}
@@ -28,9 +25,7 @@
         <div>
             <div class="overflow-hidden rounded-3xl border bg-white shadow-sm">
                 <img
-                    src="{{ $product->main_image && ! str_starts_with($product->main_image, 'images/placeholders/')
-                        ? asset('storage/' . $product->main_image)
-                        : asset('images/placeholders/product-placeholder.jpg') }}"
+                    src="{{ $product->main_image_url }}"
                     alt="{{ $product->name }}"
                     class="aspect-[4/3] w-full object-cover"
                 >
@@ -40,7 +35,7 @@
                 <div class="mt-4 grid grid-cols-4 gap-3">
                     @foreach($product->images as $image)
                         <img
-                            src="{{ asset('storage/' . $image->path) }}"
+                            src="{{ $image->url }}"
                             alt="{{ $image->alt ?? $product->name }}"
                             class="aspect-square rounded-xl border object-cover"
                         >
@@ -158,42 +153,65 @@
             @endif
         </div>
 
-        <div id="quote" class="rounded-2xl border bg-white p-6 shadow-sm">
-            <h2 class="text-2xl font-bold">Request a quote</h2>
-            <p class="mt-2 text-sm text-slate-600">
-                Leave your contact details and our sales team will contact you.
-            </p>
+        <div id="quote" class="overflow-hidden rounded-3xl border bg-white shadow-sm">
+            <div class="border-b bg-slate-50 px-6 py-5">
+                <h2 class="text-2xl font-bold">Request a quote</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Leave your contact details and our sales team will contact you with pricing and availability.
+                </p>
+            </div>
 
-            <form action="{{ route('products.quote', $product) }}" method="POST" class="mt-6 space-y-4">
-                @csrf
-
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                <div>
-                    <label class="text-sm font-semibold">Name</label>
-                    <input type="text" name="name" class="mt-1 w-full rounded-lg border-slate-300" required>
+            <div class="p-6">
+                <div class="mb-5 space-y-4">
+                    @include('front.components.form.alert')
+                    @include('front.components.form.errors')
                 </div>
 
-                <div>
-                    <label class="text-sm font-semibold">Phone</label>
-                    <input type="text" name="phone" class="mt-1 w-full rounded-lg border-slate-300" required>
-                </div>
+                <form action="{{ route('products.quote', $product) }}" method="POST" class="space-y-5">
+                    @csrf
 
-                <div>
-                    <label class="text-sm font-semibold">Email</label>
-                    <input type="email" name="email" class="mt-1 w-full rounded-lg border-slate-300">
-                </div>
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                <div>
-                    <label class="text-sm font-semibold">Message</label>
-                    <textarea name="message" rows="4" class="mt-1 w-full rounded-lg border-slate-300">I am interested in {{ $product->name }}.</textarea>
-                </div>
+                    @include('front.components.form.input', [
+                        'label' => 'Full name',
+                        'name' => 'name',
+                        'placeholder' => 'John Farmer',
+                        'required' => true,
+                    ])
 
-                <button type="submit"
-                        class="w-full rounded-xl bg-green-700 px-5 py-3 font-semibold text-white hover:bg-green-800">
-                    Send request
-                </button>
-            </form>
+                    @include('front.components.form.input', [
+                        'label' => 'Phone number',
+                        'name' => 'phone',
+                        'placeholder' => '+1 555 300 4000',
+                        'required' => true,
+                    ])
+
+                    @include('front.components.form.input', [
+                        'label' => 'Email address',
+                        'name' => 'email',
+                        'type' => 'email',
+                        'placeholder' => 'john@example.com',
+                    ])
+
+                    @include('front.components.form.textarea', [
+                        'label' => 'Message',
+                        'name' => 'message',
+                        'rows' => 5,
+                        'value' => 'I am interested in ' . $product->name . '.',
+                    ])
+
+                    <button
+                        type="submit"
+                        class="w-full rounded-xl bg-green-700 px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-green-900/20 transition hover:bg-green-800"
+                    >
+                        Send quote request
+                    </button>
+
+                    <p class="text-center text-xs leading-5 text-slate-500">
+                        No payment required. This form only sends a request to the dealer.
+                    </p>
+                </form>
+            </div>
         </div>
     </section>
 

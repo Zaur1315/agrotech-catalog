@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Front\CatalogController;
+use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\QuoteCartController;
@@ -34,3 +35,9 @@ Route::delete('/quote/{product:slug}/remove', [QuoteCartController::class, 'remo
 
 Route::post('/quote/submit', [QuoteCartController::class, 'submit'])
     ->name('quote.submit');
+
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact.index');
+
+Route::post('/contact', [ContactController::class, 'store'])
+    ->name('contact.store');

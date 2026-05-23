@@ -1,58 +1,332 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AgroTech Catalog
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+AgroTech Catalog is a Laravel-based MVP for an agricultural equipment dealer website.
 
-## About Laravel
+The project was built as a reusable base for commercial catalog websites in agriculture, automotive, motorcycle, powersports, and equipment sales niches. It includes a public catalog, equipment detail pages, quote request workflow, quote list functionality, and an admin panel for managing inventory and leads.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Laravel 12
+- PostgreSQL
+- Filament Admin Panel
+- Blade
+- Tailwind CSS
+- Vite
+- Session-based quote cart
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Main Features
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Public Website
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Modern landing page
+- Equipment catalog
+- Category pages
+- Product detail pages
+- Product image gallery
+- Product specifications
+- Catalog filters:
+    - Brand
+    - Condition
+    - Price range
+    - Model year
+    - Sorting
+- Single product quote request form
+- Quote list for multiple products
+- Contact page
+- Responsive layout
+- Dark commercial UI with green accent styling
 
-## Agentic Development
+### Admin Panel
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+The project includes a Filament-based admin panel.
+
+Admin can manage:
+
+- Categories
+- Brands
+- Products
+- Product images
+- Product specifications
+- Leads / quote requests
+
+### Quote Workflow
+
+The project supports two lead generation flows:
+
+1. Product quote request  
+   A customer sends a request directly from a product detail page.
+
+2. Quote list request  
+   A customer adds multiple products to the quote list and sends one combined request.
+
+All requests are stored as leads and can be reviewed in the admin panel.
+
+---
+
+## Project Goal
+
+The goal of this project is not only to build a single MVP website, but also to create a reusable Laravel base for fast production of similar commercial equipment catalog websites.
+
+The structure can be reused for:
+
+- Agricultural equipment dealers
+- Motorcycle dealers
+- Powersports stores
+- Automotive catalogs
+- Heavy machinery catalogs
+- Parts and equipment request platforms
+
+---
+
+## Installation
+
+Clone the repository:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repository-url>
+cd agrotech-catalog
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install PHP dependencies:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install frontend dependencies:
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Create environment file:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Generate application key:
 
-## License
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Database Setup
+
+The project is configured for PostgreSQL by default.
+
+Create database and user:
+
+```sql
+CREATE USER agrotech_user WITH PASSWORD 'agrotech_password';
+CREATE DATABASE agrotech_catalog OWNER agrotech_user;
+GRANT ALL PRIVILEGES ON DATABASE agrotech_catalog TO agrotech_user;
+```
+
+Update `.env` if needed:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=agrotech_catalog
+DB_USERNAME=agrotech_user
+DB_PASSWORD=agrotech_password
+```
+
+Run migrations and seeders:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Create storage symlink:
+
+```bash
+php artisan storage:link
+```
+
+---
+
+## Running the Project
+
+Start Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Start Vite development server:
+
+```bash
+npm run dev
+```
+
+Open the website:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## Admin Panel
+
+Admin panel URL:
+
+```text
+http://127.0.0.1:8000/admin
+```
+
+Default admin credentials:
+
+```text
+Email: admin@example.com
+Password: password
+```
+
+The default admin user is created by `DatabaseSeeder`.
+
+---
+
+## Demo Data
+
+Seeders create demo data for:
+
+- Categories
+- Brands
+- Products
+- Product specifications
+- Product images
+- Admin user
+
+Demo equipment includes tractors, harvesters, utility vehicles, balers, and attachments.
+
+---
+
+## Public Routes
+
+```text
+GET     /                    Home page
+GET     /catalog             Equipment catalog
+GET     /catalog/{slug}      Category page
+GET     /equipment/{slug}    Product detail page
+POST    /equipment/{slug}/quote
+GET     /quote               Quote list page
+POST    /quote/{slug}/add
+DELETE  /quote/{slug}/remove
+POST    /quote/submit
+GET     /contact
+POST    /contact
+```
+
+---
+
+## Admin Resources
+
+```text
+Catalog
+- Categories
+- Brands
+- Products
+
+Sales
+- Leads
+```
+
+---
+
+## Useful Commands
+
+Clear cache:
+
+```bash
+php artisan optimize:clear
+```
+
+Rebuild database with seed data:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Build frontend assets:
+
+```bash
+npm run build
+```
+
+Run Laravel Pint:
+
+```bash
+./vendor/bin/pint
+```
+
+Check routes:
+
+```bash
+php artisan route:list
+```
+
+---
+
+## Notes
+
+- Product images uploaded from the admin panel are stored on the public disk.
+- Demo images can be served from the public directory or public storage disk.
+- Quote list is session-based and does not require user registration.
+- Leads are stored in the database and managed from the admin panel.
+- The public Admin button is visible only for authenticated users.
+
+---
+
+## Final Manual Checklist
+
+Before submitting or deploying the project, check the following scenarios:
+
+- Home page opens correctly.
+- Catalog page opens correctly.
+- Category pages open correctly.
+- Catalog filters work.
+- Product detail page opens correctly.
+- Product images are displayed correctly.
+- Product quote form creates a lead.
+- Add to quote list works.
+- Quote list counter works.
+- Quote list submit creates a lead with selected products.
+- Contact form creates a lead.
+- Admin login works.
+- Admin button is hidden for guests.
+- Products are visible in admin.
+- Product images are visible in admin table.
+- Image upload from admin works.
+- Leads are visible in admin.
+- Mobile layout is acceptable.
+
+---
+
+## Future Improvements
+
+Possible next steps:
+
+- Product availability status
+- Dealer location management
+- Email notifications for new leads
+- Lead status history
+- Advanced inventory search
+- Saved filters
+- Multi-language support
+- SEO meta management
+- Deployment configuration
+- Automated tests
+
+---
+
+### [Scroll to Top ↑](#agroTech-catalog)

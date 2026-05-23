@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
@@ -49,6 +48,14 @@ final class CatalogController extends Controller
 
         if ($request->filled('max_price')) {
             $query->where('price', '<=', (float)$request->input('max_price'));
+        }
+
+        if ($request->filled('year_from')) {
+            $query->where('year', '>=', (int)$request->integer('year_from'));
+        }
+
+        if ($request->filled('year_to')) {
+            $query->where('year', '<=', (int)$request->integer('year_to'));
         }
 
         $sort = $request->string('sort')->toString();

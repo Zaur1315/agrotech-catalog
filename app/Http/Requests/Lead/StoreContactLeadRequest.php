@@ -5,7 +5,7 @@ namespace App\Http\Requests\Lead;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class StoreProductLeadRequest extends FormRequest
+final class StoreContactLeadRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -33,23 +33,16 @@ final class StoreProductLeadRequest extends FormRequest
                 'email',
                 'max:255',
             ],
+            'subject' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'message' => [
                 'nullable',
                 'string',
                 'max:5000',
             ],
-        ];
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'Please enter your name.',
-            'phone.required' => 'Please enter your phone number.',
-            'email.email' => 'Please enter a valid email address.',
         ];
     }
 }

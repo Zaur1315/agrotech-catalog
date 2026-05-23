@@ -85,7 +85,7 @@ final class Product extends Model
             return $this->main_image;
         }
 
-        if (str_starts_with($this->main_image, 'images/placeholders/')) {
+        if (str_starts_with($this->main_image, 'images/')) {
             return asset($this->main_image);
         }
 

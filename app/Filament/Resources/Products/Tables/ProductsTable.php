@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Models\Product;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -21,8 +22,9 @@ final class ProductsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('main_image')
+                ImageColumn::make('main_image_url')
                     ->label('Image')
+                    ->getStateUsing(static fn(Product $record): string => $record->main_image_url)
                     ->square(),
 
                 TextColumn::make('name')

@@ -1,20 +1,13 @@
 @extends('front.layouts.app', ['title' => 'Quote List'])
 
 @section('content')
-    <section class="border-b bg-white">
-        <div class="mx-auto max-w-7xl px-4 py-10">
-            <div class="text-sm text-slate-500">
-                <a href="{{ route('home') }}" class="hover:text-green-700">Home</a>
-                <span class="mx-2">/</span>
-                <span>Quote List</span>
-            </div>
-
-            <h1 class="mt-4 text-4xl font-bold">Quote List</h1>
-            <p class="mt-3 max-w-3xl text-slate-600">
-                Review selected equipment and send one request to our sales team.
-            </p>
-        </div>
-    </section>
+    @include('front.components.page-banner', [
+        'title' => 'Quote List',
+        'description' => 'Review selected equipment and send one request to our sales team.',
+        'badge' => 'Quote List',
+        'statLabel' => 'Selected items',
+        'statValue' => $items->sum('quantity'),
+    ])
 
     <section class="mx-auto grid max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[1fr_420px]">
         <div>
@@ -92,76 +85,69 @@
             @endif
         </div>
 
-        <aside class="rounded-2xl border bg-white p-6 shadow-sm">
-            <h2 class="text-2xl font-bold">Send quote request</h2>
-            <p class="mt-2 text-sm text-slate-600">
-                Fill in your contact details and we will get back to you.
-            </p>
+        <aside class="overflow-hidden rounded-3xl border bg-white shadow-sm">
+            <div class="border-b bg-slate-50 px-6 py-5">
+                <h2 class="text-2xl font-bold">Send quote request</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Fill in your contact details and send one request for all selected equipment.
+                </p>
+            </div>
 
-            <form action="{{ route('quote.submit') }}" method="POST" class="mt-6 space-y-4">
-                @csrf
+            <div class="p-6">
+                <div class="mb-5 space-y-4">
+                    @include('front.components.form.errors')
+                </div>
 
-                @if($errors->any())
-                    <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-                        <div class="font-semibold">Please check the form fields:</div>
+                <form action="{{ route('quote.submit') }}" method="POST" class="space-y-5">
+                    @csrf
 
-                        <ul class="mt-2 list-inside list-disc">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                    @include('front.components.form.input', [
+                        'label' => 'Full name',
+                        'name' => 'name',
+                        'placeholder' => 'John Farmer',
+                        'required' => true,
+                    ])
 
-                <div>
-                    <label class="text-sm font-semibold">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value="{{ old('name') }}"
-                        class="mt-1 w-full rounded-lg border-slate-300"
-                        required
+                    @include('front.components.form.input', [
+                        'label' => 'Phone number',
+                        'name' => 'phone',
+                        'placeholder' => '+1 555 300 4000',
+                        'required' => true,
+                    ])
+
+                    @include('front.components.form.input', [
+                        'label' => 'Email address',
+                        'name' => 'email',
+                        'type' => 'email',
+                        'placeholder' => 'john@example.com',
+                    ])
+
+                    @include('front.components.form.textarea', [
+                        'label' => 'Message',
+                        'name' => 'message',
+                        'rows' => 5,
+                        'placeholder' => 'Tell us more about your farm, delivery location or financing needs.',
+                    ])
+
+                    <button
+                        type="submit"
+                        class="w-full rounded-xl bg-green-700 px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-green-900/20 transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        @disabled($items->isEmpty())
                     >
-                </div>
+                        Send request
+                    </button>
 
-                <div>
-                    <label class="text-sm font-semibold">Phone</label>
-                    <input
-                        type="text"
-                        name="phone"
-                        value="{{ old('phone') }}"
-                        class="mt-1 w-full rounded-lg border-slate-300"
-                        required
-                    >
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value="{{ old('email') }}"
-                        class="mt-1 w-full rounded-lg border-slate-300"
-                    >
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Message</label>
-                    <textarea
-                        name="message"
-                        rows="4"
-                        class="mt-1 w-full rounded-lg border-slate-300"
-                    >{{ old('message') }}</textarea>
-                </div>
-
-                <button
-                    type="submit"
-                    class="w-full rounded-xl bg-green-700 px-5 py-3 font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    @disabled($items->isEmpty())
-                >
-                    Send request
-                </button>
-            </form>
+                    @if($items->isEmpty())
+                        <p class="text-center text-xs leading-5 text-slate-500">
+                            Add at least one equipment item to enable this form.
+                        </p>
+                    @else
+                        <p class="text-center text-xs leading-5 text-slate-500">
+                            Selected equipment will be attached to this request.
+                        </p>
+                    @endif
+                </form>
+            </div>
         </aside>
     </section>
 @endsection
