@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'AgroTech Equipment' }}</title>
+    <title>{{ isset($title) ? $title . ' | ' . config('site.name') : config('site.name') }}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon-16x16.png') }}">
@@ -18,12 +18,17 @@
             <span class="flex w-13">
                 <img src="{{ asset('/images/logo.png') }}" alt="logo">
             </span>
-            <span>AgroTech</span>
+            <span>{{ config('site.name') }}</span>
         </a>
 
-        <nav class="hidden items-center gap-6 text-sm font-semibold text-slate-700 md:flex">
+        <nav class="hidden items-center gap-5 text-sm font-semibold text-slate-700 lg:flex">
             <a href="{{ route('home') }}" class="hover:text-green-700">Home</a>
-            <a href="{{ route('catalog.index') }}" class="hover:text-green-700">Equipment</a>
+            <a href="{{ route('catalog.index') }}" class="hover:text-green-700">Catalog</a>
+            <a href="{{ route('pages.service') }}" class="hover:text-green-700">Service</a>
+            <a href="{{ route('pages.delivery') }}" class="hover:text-green-700">Delivery</a>
+            <a href="{{ route('pages.warranty') }}" class="hover:text-green-700">Warranty</a>
+            <a href="{{ route('pages.about') }}" class="hover:text-green-700">About</a>
+            <a href="{{ route('pages.faq') }}" class="hover:text-green-700">FAQ</a>
             <a href="{{ route('contact.index') }}" class="hover:text-green-700">Contact</a>
         </nav>
 
@@ -31,6 +36,13 @@
             @php
                 $quoteCount = app(\App\Services\Cart\QuoteCartService::class)->count();
             @endphp
+
+            <a
+                href="tel:{{ config('site.phone_tel') }}"
+                class="hidden rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-800 transition hover:border-green-700 hover:text-green-700 md:inline-flex"
+            >
+                Call {{ config('site.phone') }}
+            </a>
 
             <a
                 href="{{ route('quote.index') }}"
@@ -65,28 +77,59 @@
 <footer class="mt-16 border-t bg-slate-900 text-white">
     <div class="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-3">
         <div>
-            <div class="text-xl font-bold">AgroTech</div>
-            <p class="mt-3 text-sm text-slate-300">
-                Reliable agricultural equipment for farms, contractors and field operations.
+            <div class="text-xl font-bold">{{ config('site.name') }}</div>
+            <p class="mt-3 text-sm leading-6 text-slate-300">
+                Practical equipment inventory, quote requests, delivery questions and local dealership support from
+                {{ config('site.city') }}, {{ config('site.state') }}.
             </p>
         </div>
 
         <div>
             <div class="font-semibold">Contact</div>
             <div class="mt-3 space-y-1 text-sm text-slate-300">
-                <p>Phone: +1 555 300 4000</p>
-                <p>Email: sales@agrotech.test</p>
-                <p>Location: Wisconsin, USA</p>
+                <p>
+                    Phone:
+                    <a href="tel:{{ config('site.phone_tel') }}" class="hover:text-green-500">
+                        {{ config('site.phone') }}
+                    </a>
+                </p>
+
+                <p>
+                    Email:
+                    <a href="mailto:{{ config('site.email') }}" class="hover:text-green-500">
+                        {{ config('site.email') }}
+                    </a>
+                </p>
+
+                <p>Location: {{ config('site.address') }}</p>
             </div>
         </div>
 
         <div>
             <div class="font-semibold">Quick links</div>
-            <div class="mt-3 space-y-1 text-sm text-slate-300">
-                <p><a href="{{ route('catalog.index') }}" class="hover:text-white">Equipment catalog</a></p>
-                <p><a href="{{ url('/admin') }}" class="hover:text-white">Admin panel</a></p>
-                <p><a href="{{ route('contact.index') }}" class="hover:text-white">Contact us</a></p>
+            <div class="row flex gap-10">
+                <div class="mt-3 grid gap-1 text-sm text-slate-300">
+                    <a href="{{ route('pages.delivery') }}" class="hover:text-white">Delivery</a>
+                    <a href="{{ route('pages.warranty') }}" class="hover:text-white">Warranty</a>
+                    <a href="{{ route('contact.index') }}" class="hover:text-white">Contact us</a>
+                </div>
+                <div class="mt-3 grid gap-1 text-sm text-slate-300">
+                    <a href="{{ route('pages.faq') }}" class="hover:text-white">FAQ</a>
+                    <a href="{{ route('pages.terms') }}" class="hover:text-white">Terms of Use</a>
+                    <a href="{{ route('pages.privacy-policy') }}" class="hover:text-white">Privacy Policy</a>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="border-t border-white/10">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+            <p>
+                © {{ date('Y') }} {{ config('site.name') }}. All rights reserved.
+            </p>
+
+            <p>
+                Inventory, pricing and availability must be confirmed directly before purchase.
+            </p>
         </div>
     </div>
 </footer>

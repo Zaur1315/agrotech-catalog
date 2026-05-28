@@ -37,6 +37,12 @@ final class ProductsTable
                     ->searchable()
                     ->toggleable(),
 
+                TextColumn::make('stock_number')
+                    ->label('Stock #')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->sortable()
@@ -47,6 +53,20 @@ final class ProductsTable
                     ->sortable()
                     ->searchable()
                     ->placeholder('-'),
+
+                TextColumn::make('year')
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('hours_used')
+                    ->label('Hours')
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('horsepower')
+                    ->label('HP')
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('price')
                     ->money('USD')
@@ -67,6 +87,24 @@ final class ProductsTable
                         'refurbished' => 'info',
                         default => 'gray',
                     }),
+
+                TextColumn::make('status')
+                    ->badge()
+                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                        Product::STATUS_AVAILABLE => 'Available',
+                        Product::STATUS_PENDING => 'Pending',
+                        Product::STATUS_SOLD => 'Sold',
+                        Product::STATUS_HIDDEN => 'Hidden',
+                        default => '-',
+                    })
+                    ->color(static fn(?string $state): string => match ($state) {
+                        Product::STATUS_AVAILABLE => 'success',
+                        Product::STATUS_PENDING => 'warning',
+                        Product::STATUS_SOLD => 'gray',
+                        Product::STATUS_HIDDEN => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable(),
 
                 IconColumn::make('is_featured')
                     ->label('Featured')
@@ -102,6 +140,14 @@ final class ProductsTable
                         'new' => 'New',
                         'used' => 'Used',
                         'refurbished' => 'Refurbished',
+                    ]),
+
+                SelectFilter::make('status')
+                    ->options([
+                        Product::STATUS_AVAILABLE => 'Available',
+                        Product::STATUS_PENDING => 'Pending',
+                        Product::STATUS_SOLD => 'Sold',
+                        Product::STATUS_HIDDEN => 'Hidden',
                     ]),
 
                 TernaryFilter::make('is_featured')

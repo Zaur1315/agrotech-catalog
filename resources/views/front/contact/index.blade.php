@@ -36,7 +36,7 @@
                         @include('front.components.form.input', [
                             'label' => 'Phone number',
                             'name' => 'phone',
-                            'placeholder' => '+1 555 300 4000',
+                            'placeholder' => '(304) 555-0123',
                             'required' => true,
                         ])
                     </div>
@@ -55,6 +55,8 @@
                             'placeholder' => 'Equipment availability',
                         ])
                     </div>
+
+                    @include('front.components.form.preferred-contact-method')
 
                     @include('front.components.form.textarea', [
                         'label' => 'Message',
@@ -80,21 +82,21 @@
                 <div class="mt-5 space-y-4 text-sm text-slate-600">
                     <div>
                         <div class="font-semibold text-slate-900">Phone</div>
-                        <a href="tel:+15553004000" class="mt-1 inline-block hover:text-green-700">
-                            +1 555 300 4000
+                        <a href="tel:{{ config('site.phone_tel') }}" class="mt-1 inline-block hover:text-green-700">
+                            {{ config('site.phone') }}
                         </a>
                     </div>
 
                     <div>
                         <div class="font-semibold text-slate-900">Email</div>
-                        <a href="mailto:sales@agrotech.test" class="mt-1 inline-block hover:text-green-700">
-                            sales@agrotech.test
+                        <a href="mailto:{{ config('site.email') }}" class="mt-1 inline-block hover:text-green-700">
+                            {{ config('site.email') }}
                         </a>
                     </div>
 
                     <div>
                         <div class="font-semibold text-slate-900">Location</div>
-                        <p class="mt-1">Wisconsin, USA</p>
+                        <p class="mt-1">{{ config('site.address') }}</p>
                     </div>
                 </div>
             </div>

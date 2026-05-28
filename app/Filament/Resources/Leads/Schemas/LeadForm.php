@@ -33,8 +33,29 @@ final class LeadForm
                             ->tel()
                             ->maxLength(255),
 
+                        Select::make('preferred_contact_method')
+                            ->label('Preferred contact method')
+                            ->options([
+                                Lead::PREFERRED_CONTACT_PHONE => 'Phone',
+                                Lead::PREFERRED_CONTACT_EMAIL => 'Email',
+                                Lead::PREFERRED_CONTACT_ANY => 'Any',
+                            ])
+                            ->default(Lead::PREFERRED_CONTACT_ANY),
+
                         TextInput::make('subject')
                             ->maxLength(255),
+
+                        Select::make('type')
+                            ->required()
+                            ->options([
+                                Lead::TYPE_GENERAL => 'General',
+                                Lead::TYPE_QUOTE => 'Quote',
+                                Lead::TYPE_PRODUCT_QUESTION => 'Product question',
+                                Lead::TYPE_SERVICE => 'Service',
+                                Lead::TYPE_DELIVERY => 'Delivery',
+                                Lead::TYPE_FINANCING => 'Financing',
+                            ])
+                            ->default(Lead::TYPE_GENERAL),
 
                         Select::make('status')
                             ->required()
@@ -51,11 +72,65 @@ final class LeadForm
                             ->default('website')
                             ->maxLength(255),
 
+                        TextInput::make('source_page')
+                            ->label('Source page')
+                            ->maxLength(255),
+
                         Textarea::make('message')
                             ->rows(5)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+
+                Section::make('Tracking')
+                    ->schema([
+                        TextInput::make('utm_source')
+                            ->label('UTM source')
+                            ->maxLength(255),
+
+                        TextInput::make('utm_medium')
+                            ->label('UTM medium')
+                            ->maxLength(255),
+
+                        TextInput::make('utm_campaign')
+                            ->label('UTM campaign')
+                            ->maxLength(255),
+
+                        TextInput::make('utm_content')
+                            ->label('UTM content')
+                            ->maxLength(255),
+
+                        TextInput::make('utm_term')
+                            ->label('UTM term')
+                            ->maxLength(255),
+
+                        TextInput::make('fbp')
+                            ->label('Meta FBP')
+                            ->maxLength(255)
+                            ->disabled()
+                            ->dehydrated(),
+
+                        TextInput::make('fbc')
+                            ->label('Meta FBC')
+                            ->maxLength(255)
+                            ->disabled()
+                            ->dehydrated(),
+
+                        TextInput::make('ip_address')
+                            ->label('IP address')
+                            ->maxLength(45)
+                            ->disabled()
+                            ->dehydrated(),
+
+                        Textarea::make('user_agent')
+                            ->label('User agent')
+                            ->rows(3)
+                            ->disabled()
+                            ->dehydrated()
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(3)
+                    ->collapsed(),
 
                 Section::make('Requested products')
                     ->schema([

@@ -14,12 +14,23 @@ final class Product extends Model
     public const CONDITION_USED = 'used';
     public const CONDITION_REFURBISHED = 'refurbished';
 
+    public const STATUS_AVAILABLE = 'available';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_SOLD = 'sold';
+    public const STATUS_HIDDEN = 'hidden';
+
+    public const DRIVE_TYPE_2WD = '2wd';
+    public const DRIVE_TYPE_4WD = '4wd';
+    public const DRIVE_TYPE_MFWD = 'mfwd';
+
     protected $fillable = [
         'category_id',
         'brand_id',
         'name',
         'slug',
         'sku',
+        'stock_number',
+        'serial_number',
         'short_description',
         'description',
         'price',
@@ -30,7 +41,12 @@ final class Product extends Model
         'transmission',
         'fuel_type',
         'hours_used',
+        'horsepower',
+        'drive_type',
         'main_image',
+        'location',
+        'status',
+        'sort_order',
         'is_featured',
         'is_active',
     ];
@@ -42,8 +58,11 @@ final class Product extends Model
         'price_on_request' => 'boolean',
         'year' => 'integer',
         'hours_used' => 'integer',
+        'horsepower' => 'integer',
+        'sort_order' => 'integer',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
+
     ];
 
     public function category(): BelongsTo

@@ -94,8 +94,8 @@
                     </button>
                 </form>
 
-                <a href="tel:+15553004000" class="rounded-xl border px-6 py-3 font-semibold hover:bg-slate-100">
-                    Call dealer
+                <a href="tel:{{ config('site.phone_tel') }}" class="rounded-xl border px-6 py-3 font-semibold hover:bg-slate-100">
+                    Call {{ config('site.phone') }}
                 </a>
             </div>
 
@@ -182,7 +182,7 @@
                     @include('front.components.form.input', [
                         'label' => 'Phone number',
                         'name' => 'phone',
-                        'placeholder' => '+1 555 300 4000',
+                        'placeholder' => '(304) 555-0123',
                         'required' => true,
                     ])
 
@@ -192,6 +192,8 @@
                         'type' => 'email',
                         'placeholder' => 'john@example.com',
                     ])
+
+                    @include('front.components.form.preferred-contact-method')
 
                     @include('front.components.form.textarea', [
                         'label' => 'Message',

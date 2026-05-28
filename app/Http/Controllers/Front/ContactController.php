@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Lead\StoreContactLeadRequest;
 use App\Services\Lead\ContactLeadService;
+use App\Services\Lead\LeadContextFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -18,10 +19,13 @@ final class ContactController extends Controller
 
     public function store(
         StoreContactLeadRequest $request,
-        ContactLeadService      $leadService,
-    ): RedirectResponse
-    {
-        $leadService->create($request->validated());
+        ContactLeadService $leadService,
+        LeadContextFactory $leadContextFactory,
+    ): RedirectResponse {
+        $leadService->create(
+            $request->validated(),
+            $leadContextFactory->fromRequest($request),
+        );
 
         return redirect()
             ->route('contact.index')

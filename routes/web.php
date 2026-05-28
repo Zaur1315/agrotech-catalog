@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Front\CatalogController;
 use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\PageController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\QuoteCartController;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +42,24 @@ Route::get('/contact', [ContactController::class, 'index'])
 
 Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');
+
+Route::get('/service', [PageController::class, 'service'])
+    ->name('pages.service');
+
+Route::get('/delivery', [PageController::class, 'delivery'])
+    ->name('pages.delivery');
+
+Route::get('/warranty', [PageController::class, 'warranty'])
+    ->name('pages.warranty');
+
+Route::get('/about', [PageController::class, 'about'])
+    ->name('pages.about');
+
+Route::get('/faq', [PageController::class, 'faq'])
+    ->name('pages.faq');
+
+Route::get('/terms', [PageController::class, 'terms'])
+    ->name('pages.terms');
+
+Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])
+    ->name('pages.privacy-policy');

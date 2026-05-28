@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Lead;
 
+use App\Models\Lead;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class StoreContactLeadRequest extends FormRequest
@@ -27,6 +28,15 @@ final class StoreContactLeadRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
+            ],
+            'preferred_contact_method' => [
+                'nullable',
+                'string',
+                'in:' . implode(',', [
+                    Lead::PREFERRED_CONTACT_PHONE,
+                    Lead::PREFERRED_CONTACT_EMAIL,
+                    Lead::PREFERRED_CONTACT_ANY,
+                ]),
             ],
             'email' => [
                 'nullable',

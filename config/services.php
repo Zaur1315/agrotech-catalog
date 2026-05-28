@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'leads' => [
+        'notification_email' => env('LEAD_NOTIFICATION_EMAIL'),
+        'from_name' => env('LEAD_NOTIFICATION_FROM_NAME', 'Mt. Nebo Tractor'),
+    ],
+
 ];

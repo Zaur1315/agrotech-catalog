@@ -46,6 +46,14 @@ final class ProductForm
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
+                        TextInput::make('stock_number')
+                            ->label('Stock number')
+                            ->maxLength(255),
+
+                        TextInput::make('serial_number')
+                            ->label('Serial number')
+                            ->maxLength(255),
+
                         Select::make('category_id')
                             ->label('Category')
                             ->relationship('category', 'name')
@@ -109,6 +117,21 @@ final class ProductForm
                         TextInput::make('hours_used')
                             ->numeric()
                             ->minValue(0),
+
+                        TextInput::make('horsepower')
+                            ->label('Horsepower')
+                            ->numeric()
+                            ->minValue(0)
+                            ->suffix('HP'),
+
+                        Select::make('drive_type')
+                            ->label('Drive type')
+                            ->options([
+                                Product::DRIVE_TYPE_2WD => '2WD',
+                                Product::DRIVE_TYPE_4WD => '4WD',
+                                Product::DRIVE_TYPE_MFWD => 'MFWD',
+                            ])
+                            ->searchable(),
                     ])
                     ->columns(3),
 
@@ -172,6 +195,25 @@ final class ProductForm
 
                 Section::make('Publishing')
                     ->schema([
+                        Select::make('status')
+                            ->options([
+                                Product::STATUS_AVAILABLE => 'Available',
+                                Product::STATUS_PENDING => 'Pending',
+                                Product::STATUS_SOLD => 'Sold',
+                                Product::STATUS_HIDDEN => 'Hidden',
+                            ])
+                            ->default(Product::STATUS_AVAILABLE)
+                            ->required(),
+
+                        TextInput::make('location')
+                            ->maxLength(255)
+                            ->placeholder('Mt Nebo, WV'),
+
+                        TextInput::make('sort_order')
+                            ->numeric()
+                            ->default(0)
+                            ->minValue(0),
+
                         Toggle::make('is_featured')
                             ->label('Featured')
                             ->default(false),
@@ -180,7 +222,7 @@ final class ProductForm
                             ->label('Active')
                             ->default(true),
                     ])
-                    ->columns(2),
+                    ->columns(3),
             ]);
     }
 }

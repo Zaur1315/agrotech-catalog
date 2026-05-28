@@ -1,3 +1,4 @@
+@php use App\Models\Product; @endphp
 @extends('front.layouts.app', ['title' => 'Quote List'])
 
 @section('content')
@@ -40,7 +41,7 @@
                 <div class="space-y-4">
                     @foreach($items as $item)
                         @php
-                            /** @var \App\Models\Product $product */
+                            /** @var Product $product */
                             $product = $item['product'];
                         @endphp
 
@@ -111,7 +112,7 @@
                     @include('front.components.form.input', [
                         'label' => 'Phone number',
                         'name' => 'phone',
-                        'placeholder' => '+1 555 300 4000',
+                        'placeholder' => '(304) 555-0123',
                         'required' => true,
                     ])
 
@@ -121,6 +122,8 @@
                         'type' => 'email',
                         'placeholder' => 'john@example.com',
                     ])
+
+                    @include('front.components.form.preferred-contact-method')
 
                     @include('front.components.form.textarea', [
                         'label' => 'Message',

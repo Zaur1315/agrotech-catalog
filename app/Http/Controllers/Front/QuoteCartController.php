@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Lead\StoreQuoteCartLeadRequest;
 use App\Models\Product;
 use App\Services\Cart\QuoteCartService;
+use App\Services\Lead\LeadContextFactory;
 use App\Services\Lead\ProductLeadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -36,12 +37,15 @@ final class QuoteCartController extends Controller
         return back()->with('success', 'Equipment removed from quote list.');
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function submit(
         StoreQuoteCartLeadRequest $request,
-        QuoteCartService          $cart,
-        ProductLeadService        $leadService,
-    ): RedirectResponse
-    {
+        QuoteCartService $cart,
+        ProductLeadService $leadService,
+        LeadContextFactory $leadContextFactory,
+    ): RedirectResponse {
         $items = $cart->items();
 
         if ($items->isEmpty()) {
@@ -50,7 +54,11 @@ final class QuoteCartController extends Controller
                 ->with('error', 'Your quote list is empty.');
         }
 
-        $leadService->createFromQuoteCart($items, $request->validated());
+        $leadService->createFromQuoteCart(
+            $items,
+            $request->validated(),
+            $leadContextFactory->fromRequest($request),
+        );
 
         $cart->clear();
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Lead\StoreProductLeadRequest;
 use App\Models\Product;
+use App\Services\Lead\LeadContextFactory;
 use App\Services\Lead\ProductLeadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -38,15 +39,22 @@ final class ProductController extends Controller
         ]);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function quote(
         StoreProductLeadRequest $request,
-        Product                 $product,
-        ProductLeadService      $leadService,
-    ): RedirectResponse
-    {
+        Product $product,
+        ProductLeadService $leadService,
+        LeadContextFactory $leadContextFactory,
+    ): RedirectResponse {
         abort_if(!$product->is_active, 404);
 
-        $leadService->createFromProduct($product, $request->validated());
+        $leadService->createFromProduct(
+            $product,
+            $request->validated(),
+            $leadContextFactory->fromRequest($request),
+        );
 
         return redirect()
             ->route('products.show', $product)
