@@ -49,7 +49,7 @@ final class CategorySeeder extends Seeder
                     'image' => null,
                     'is_active' => true,
                     'sort_order' => $category['sort_order'],
-                ]
+                ],
             );
         }
     }

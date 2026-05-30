@@ -102,6 +102,15 @@
                 <form action="{{ route('quote.submit') }}" method="POST" class="space-y-5">
                     @csrf
 
+                    <input
+                        type="text"
+                        name="website"
+                        value=""
+                        tabindex="-1"
+                        autocomplete="off"
+                        class="hidden"
+                    >
+
                     @include('front.components.form.input', [
                         'label' => 'Full name',
                         'name' => 'name',

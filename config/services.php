@@ -40,4 +40,15 @@ return [
         'from_name' => env('LEAD_NOTIFICATION_FROM_NAME', 'Mt. Nebo Tractor'),
     ],
 
+    'meta' => [
+        'pixel_id' => env('META_PIXEL_ID'),
+        'pixel_enabled' => filter_var(env('META_PIXEL_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
+
+        'capi_enabled' => filter_var(env('META_CAPI_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
+        'capi_access_token' => env('META_CAPI_ACCESS_TOKEN'),
+        'capi_test_event_code' => env('META_CAPI_TEST_EVENT_CODE'),
+        'capi_debug' => filter_var(env('META_CAPI_DEBUG', false), FILTER_VALIDATE_BOOLEAN),
+        'graph_api_version' => env('META_GRAPH_API_VERSION', 'v25.0'),
+    ],
+
 ];

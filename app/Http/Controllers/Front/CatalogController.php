@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
@@ -28,7 +29,8 @@ final class CatalogController extends Controller
     {
         $query = Product::query()
             ->with(['category', 'brand'])
-            ->where('is_active', true);
+            ->where('is_active', true)
+            ->where('status', '!=', Product::STATUS_HIDDEN);
 
         if ($currentCategory !== null) {
             $query->where('category_id', $currentCategory->id);
@@ -40,6 +42,14 @@ final class CatalogController extends Controller
 
         if ($request->filled('condition')) {
             $query->where('condition', $request->string('condition')->toString());
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->string('status')->toString());
+        }
+
+        if ($request->filled('drive_type')) {
+            $query->where('drive_type', $request->string('drive_type')->toString());
         }
 
         if ($request->filled('min_price')) {
@@ -58,13 +68,23 @@ final class CatalogController extends Controller
             $query->where('year', '<=', (int)$request->integer('year_to'));
         }
 
+        if ($request->filled('max_hours')) {
+            $query->where('hours_used', '<=', (int)$request->integer('max_hours'));
+        }
+
+        if ($request->filled('min_horsepower')) {
+            $query->where('horsepower', '>=', (int)$request->integer('min_horsepower'));
+        }
+
         $sort = $request->string('sort')->toString();
 
         match ($sort) {
-            'price_asc' => $query->orderBy('price'),
+            'price_asc' => $query->orderByRaw('price IS NULL')->orderBy('price'),
             'price_desc' => $query->orderByDesc('price'),
             'year_desc' => $query->orderByDesc('year'),
             'year_asc' => $query->orderBy('year'),
+            'hours_asc' => $query->orderByRaw('hours_used IS NULL')->orderBy('hours_used'),
+            'horsepower_desc' => $query->orderByDesc('horsepower'),
             default => $query->latest(),
         };
 

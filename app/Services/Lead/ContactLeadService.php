@@ -10,8 +10,7 @@ final readonly class ContactLeadService
 {
     public function __construct(
         private LeadNotificationService $leadNotificationService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -31,7 +30,9 @@ final readonly class ContactLeadService
      *     utm_medium?:string|null,
      *     utm_campaign?:string|null,
      *     utm_content?:string|null,
-     *     utm_term?:string|null
+     *     utm_term?:string|null,
+     *     fbp?:string|null,
+     *     fbc?:string|null
      * } $context
      */
     public function create(array $data, array $context = []): Lead
@@ -53,6 +54,8 @@ final readonly class ContactLeadService
             'utm_campaign' => $context['utm_campaign'] ?? null,
             'utm_content' => $context['utm_content'] ?? null,
             'utm_term' => $context['utm_term'] ?? null,
+            'fbp' => $context['fbp'] ?? null,
+            'fbc' => $context['fbc'] ?? null,
             'ip_address' => $context['ip_address'] ?? null,
             'user_agent' => $context['user_agent'] ?? null,
         ]);

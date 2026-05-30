@@ -24,7 +24,7 @@ final class ProductsTable
             ->columns([
                 ImageColumn::make('main_image_url')
                     ->label('Image')
-                    ->getStateUsing(static fn(Product $record): string => $record->main_image_url)
+                    ->getStateUsing(static fn (Product $record): string => $record->main_image_url)
                     ->square(),
 
                 TextColumn::make('name')
@@ -75,13 +75,13 @@ final class ProductsTable
 
                 TextColumn::make('condition')
                     ->badge()
-                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                    ->formatStateUsing(static fn (?string $state): string => match ($state) {
                         'new' => 'New',
                         'used' => 'Used',
                         'refurbished' => 'Refurbished',
                         default => '-',
                     })
-                    ->color(static fn(?string $state): string => match ($state) {
+                    ->color(static fn (?string $state): string => match ($state) {
                         'new' => 'success',
                         'used' => 'warning',
                         'refurbished' => 'info',
@@ -90,14 +90,14 @@ final class ProductsTable
 
                 TextColumn::make('status')
                     ->badge()
-                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                    ->formatStateUsing(static fn (?string $state): string => match ($state) {
                         Product::STATUS_AVAILABLE => 'Available',
                         Product::STATUS_PENDING => 'Pending',
                         Product::STATUS_SOLD => 'Sold',
                         Product::STATUS_HIDDEN => 'Hidden',
                         default => '-',
                     })
-                    ->color(static fn(?string $state): string => match ($state) {
+                    ->color(static fn (?string $state): string => match ($state) {
                         Product::STATUS_AVAILABLE => 'success',
                         Product::STATUS_PENDING => 'warning',
                         Product::STATUS_SOLD => 'gray',

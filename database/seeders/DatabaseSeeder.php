@@ -17,7 +17,7 @@ final class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'password' => Hash::make('password'),
-            ]
+            ],
         );
 
         $this->call([

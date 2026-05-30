@@ -23,6 +23,7 @@ Route::get('/equipment/{product:slug}', [ProductController::class, 'show'])
     ->name('products.show');
 
 Route::post('/equipment/{product:slug}/quote', [ProductController::class, 'quote'])
+    ->middleware('throttle:lead-forms')
     ->name('products.quote');
 
 Route::get('/quote', [QuoteCartController::class, 'index'])
@@ -35,12 +36,14 @@ Route::delete('/quote/{product:slug}/remove', [QuoteCartController::class, 'remo
     ->name('quote.remove');
 
 Route::post('/quote/submit', [QuoteCartController::class, 'submit'])
+    ->middleware('throttle:lead-forms')
     ->name('quote.submit');
 
 Route::get('/contact', [ContactController::class, 'index'])
     ->name('contact.index');
 
 Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:lead-forms')
     ->name('contact.store');
 
 Route::get('/service', [PageController::class, 'service'])

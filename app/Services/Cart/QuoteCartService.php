@@ -46,7 +46,7 @@ final class QuoteCartService
     public function count(): int
     {
         return array_sum(
-            array_column($this->getRawItems(), 'quantity')
+            array_column($this->getRawItems(), 'quantity'),
         );
     }
 

@@ -43,7 +43,7 @@ final class BrandSeeder extends Seeder
                     'description' => $brand['description'],
                     'logo' => null,
                     'is_active' => true,
-                ]
+                ],
             );
         }
     }

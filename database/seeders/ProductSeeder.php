@@ -174,7 +174,7 @@ final class ProductSeeder extends Seeder
                     'main_image' => $productData['image'],
                     'is_featured' => $productData['is_featured'],
                     'is_active' => true,
-                ]
+                ],
             );
 
             ProductImage::query()->updateOrCreate(
@@ -185,7 +185,7 @@ final class ProductSeeder extends Seeder
                 [
                     'path' => $productData['image'],
                     'alt' => $product->name,
-                ]
+                ],
             );
 
             $sortOrder = 1;
@@ -199,7 +199,7 @@ final class ProductSeeder extends Seeder
                     [
                         'value' => $value,
                         'sort_order' => $sortOrder,
-                    ]
+                    ],
                 );
 
                 $sortOrder++;
@@ -211,7 +211,7 @@ final class ProductSeeder extends Seeder
     {
         return sprintf(
             '%s is a reliable agricultural machine designed for demanding daily farm operations.',
-            $productName
+            $productName,
         );
     }
 
@@ -219,7 +219,7 @@ final class ProductSeeder extends Seeder
     {
         return sprintf(
             '%s offers a practical balance of performance, durability, and operator comfort. This unit is suitable for farms, contractors, and agricultural businesses looking for dependable equipment with strong field productivity.',
-            $productName
+            $productName,
         );
     }
 }

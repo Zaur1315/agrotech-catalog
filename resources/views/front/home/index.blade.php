@@ -1,52 +1,60 @@
-@extends('front.layouts.app', ['title' => 'AgroTech Equipment'])
+@extends('front.layouts.app', ['title' => 'Equipment Inventory & Tractor Sales'])
 
 @section('content')
     <section class="relative overflow-hidden bg-slate-950 text-white">
-        <div class="absolute inset-0 bg-gradient-to-br from-green-900/70 via-slate-950 to-slate-950"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-slate-950 to-slate-950"></div>
+        <div class="absolute -right-24 top-20 h-72 w-72 rounded-full bg-green-500/20 blur-3xl"></div>
+        <div class="absolute -left-24 bottom-10 h-72 w-72 rounded-full bg-green-800/20 blur-3xl"></div>
 
         <div
-            class="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+            class="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
             <div>
                 <div
                     class="mb-5 inline-flex rounded-full border border-green-400/30 bg-green-500/10 px-4 py-2 text-sm font-semibold text-green-200">
-                    Agricultural equipment dealer platform
+                    Equipment dealership in {{ config('site.city') }}, {{ config('site.state') }}
                 </div>
 
                 <h1 class="max-w-3xl text-4xl font-extrabold tracking-tight md:text-6xl">
-                    Farm equipment built for work, listed for fast quotes.
+                    Work-ready equipment with fast quote requests.
                 </h1>
 
                 <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                    Browse tractors, harvesters, utility vehicles, balers and attachments. Compare key specs,
-                    request pricing and send quote requests directly from the catalog.
+                    Browse tractors, implements, attachments, mowers, trailers and other equipment from
+                    {{ config('site.name') }}. Ask about availability, condition, delivery options and pricing before
+                    you visit.
                 </p>
 
                 <div class="mt-8 flex flex-wrap gap-4">
                     <a href="{{ route('catalog.index') }}"
-                       class="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-900/30 hover:bg-green-700">
-                        Browse equipment
+                       class="rounded-2xl bg-green-600 px-6 py-3.5 font-bold text-white shadow-lg shadow-green-900/30 transition hover:bg-green-700">
+                        View inventory
+                    </a>
+
+                    <a href="tel:{{ config('site.phone_tel') }}"
+                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
+                        Call {{ config('site.phone') }}
                     </a>
 
                     <a href="{{ route('quote.index') }}"
-                       class="rounded-xl border border-white/20 px-6 py-3 font-semibold text-white hover:bg-white/10">
-                        View quote list
+                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
+                        Request quote
                     </a>
                 </div>
 
-                <div class="mt-10 grid max-w-xl grid-cols-3 gap-4">
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div class="text-2xl font-bold">{{ $categories->count() }}</div>
-                        <div class="mt-1 text-sm text-slate-300">Categories</div>
+                <div class="mt-10 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+                        <div class="text-3xl font-black">{{ $categories->count() }}</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Equipment categories</div>
                     </div>
 
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div class="text-2xl font-bold">{{ $latestProducts->count() }}+</div>
-                        <div class="mt-1 text-sm text-slate-300">Machines</div>
+                    <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+                        <div class="text-3xl font-black">{{ $availableProductsCount }}</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Available listings</div>
                     </div>
 
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div class="text-2xl font-bold">24h</div>
-                        <div class="mt-1 text-sm text-slate-300">Quote response</div>
+                    <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+                        <div class="text-3xl font-black">WV</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Located in Mt Nebo</div>
                     </div>
                 </div>
             </div>
@@ -57,19 +65,28 @@
                 @endphp
 
                 @if($heroProduct)
-                    <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 p-4 shadow-2xl">
+                    <div
+                        class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 p-4 shadow-2xl shadow-slate-950/50">
                         <img
                             src="{{ $heroProduct->main_image_url }}"
                             alt="{{ $heroProduct->name }}"
                             class="aspect-[4/3] w-full rounded-[1.5rem] object-cover"
                         >
 
-                        <div class="mt-4 rounded-2xl bg-white p-5 text-slate-900">
-                            <div class="text-sm font-semibold uppercase tracking-wide text-green-700">
-                                Featured equipment
+                        <div class="mt-4 rounded-3xl bg-white p-5 text-slate-900">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="text-sm font-bold uppercase tracking-wide text-green-700">
+                                    Featured inventory
+                                </div>
+
+                                @if($heroProduct->stock_number)
+                                    <div class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
+                                        Stock # {{ $heroProduct->stock_number }}
+                                    </div>
+                                @endif
                             </div>
 
-                            <div class="mt-1 text-2xl font-bold">
+                            <div class="mt-2 text-2xl font-black">
                                 {{ $heroProduct->name }}
                             </div>
 
@@ -83,23 +100,44 @@
                                     <span class="rounded-full bg-slate-100 px-3 py-1">{{ $heroProduct->year }}</span>
                                 @endif
 
-                                @if($heroProduct->condition)
+                                @if($heroProduct->hours_used !== null)
                                     <span
-                                        class="rounded-full bg-slate-100 px-3 py-1">{{ ucfirst($heroProduct->condition) }}</span>
+                                        class="rounded-full bg-slate-100 px-3 py-1">{{ $heroProduct->hours_used }} hrs</span>
+                                @endif
+
+                                @if($heroProduct->horsepower)
+                                    <span
+                                        class="rounded-full bg-slate-100 px-3 py-1">{{ $heroProduct->horsepower }} HP</span>
                                 @endif
                             </div>
 
-                            <div class="mt-4 flex items-center justify-between">
-                                <div class="text-xl font-bold text-green-700">
-                                    {{ $heroProduct->formatted_price }}
+                            <div class="mt-5 flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Price
+                                    </div>
+                                    <div class="text-2xl font-black text-green-700">
+                                        {{ $heroProduct->formatted_price }}
+                                    </div>
                                 </div>
 
                                 <a href="{{ route('products.show', $heroProduct) }}"
-                                   class="font-semibold text-slate-900 hover:text-green-700">
+                                   class="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-green-700">
                                     View details
                                 </a>
                             </div>
                         </div>
+                    </div>
+                @else
+                    <div class="rounded-[2rem] border border-white/10 bg-white/10 p-8 shadow-2xl">
+                        <h2 class="text-2xl font-bold">Inventory coming soon</h2>
+                        <p class="mt-3 leading-7 text-slate-300">
+                            Contact {{ config('site.name') }} to ask about current equipment availability.
+                        </p>
+
+                        <a href="{{ route('contact.index') }}"
+                           class="mt-6 inline-flex rounded-2xl bg-green-600 px-5 py-3 text-sm font-bold text-white hover:bg-green-700">
+                            Contact us
+                        </a>
                     </div>
                 @endif
             </div>
@@ -107,39 +145,45 @@
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-14">
-        <div class="grid gap-4 md:grid-cols-3">
-            <div class="rounded-2xl border bg-white p-6 shadow-sm">
-                <div class="text-lg font-bold">Verified inventory</div>
-                <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Organize listings with categories, brands, specifications, images and availability details.
+        <div class="grid gap-5 md:grid-cols-3">
+            <div class="rounded-3xl border bg-white p-6 shadow-sm">
+                <div class="text-lg font-bold">Inventory you can ask about</div>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Review equipment listings, specs, photos and pricing details, then contact us to confirm current
+                    availability.
                 </p>
             </div>
 
-            <div class="rounded-2xl border bg-white p-6 shadow-sm">
-                <div class="text-lg font-bold">Fast quote workflow</div>
-                <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Customers can request a single machine or build a quote list with multiple equipment items.
+            <div class="rounded-3xl border bg-white p-6 shadow-sm">
+                <div class="text-lg font-bold">Quote-first buying process</div>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Request a quote for one machine or add several items to your quote list and send one combined
+                    request.
                 </p>
             </div>
 
-            <div class="rounded-2xl border bg-white p-6 shadow-sm">
-                <div class="text-lg font-bold">Reusable admin base</div>
-                <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Filament admin panel makes it easy to manage products, leads, images and catalog data.
+            <div class="rounded-3xl border bg-white p-6 shadow-sm">
+                <div class="text-lg font-bold">Delivery and support questions</div>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Ask about delivery options, equipment condition, attachments, warranty availability and next steps.
                 </p>
             </div>
         </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-14">
-        <div class="flex items-end justify-between gap-4">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <h2 class="text-3xl font-bold">Shop by category</h2>
-                <p class="mt-2 text-slate-600">Find equipment by the type of work you need to complete.</p>
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Shop by type</div>
+                <h2 class="mt-2 text-3xl font-black">Equipment categories</h2>
+                <p class="mt-2 max-w-2xl text-slate-600">
+                    Find equipment by the type of work you need to complete.
+                </p>
             </div>
 
-            <a href="{{ route('catalog.index') }}" class="text-sm font-semibold text-green-700 hover:text-green-800">
-                View all equipment
+            <a href="{{ route('catalog.index') }}"
+               class="inline-flex rounded-2xl border bg-white px-5 py-3 text-sm font-bold hover:bg-slate-50">
+                View all inventory
             </a>
         </div>
 
@@ -147,25 +191,31 @@
             @foreach($categories as $category)
                 <a
                     href="{{ route('catalog.category', $category) }}"
-                    class="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white shadow-xl transition duration-200 hover:-translate-y-1 hover:border-green-500 hover:shadow-2xl"
+                    class="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-xl transition duration-200 hover:-translate-y-1 hover:border-green-500 hover:shadow-2xl"
                 >
-                    <div class="absolute inset-0 bg-gradient-to-br from-green-900/50 via-slate-950 to-slate-950 opacity-80"></div>
-                    <div class="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-green-500/20 blur-2xl transition group-hover:bg-green-400/30"></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-green-900/50 via-slate-950 to-slate-950 opacity-90"></div>
+                    <div
+                        class="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-green-500/20 blur-2xl transition group-hover:bg-green-400/30"></div>
 
                     <div class="relative">
-                        <div class="mb-4 inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-green-200">
-                            Equipment
+                        <div
+                            class="mb-4 inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-green-200">
+                            Inventory
                         </div>
 
-                        <div class="text-lg font-bold text-white transition group-hover:text-green-200">
+                        <div class="text-xl font-black text-white transition group-hover:text-green-200">
                             {{ $category->name }}
                         </div>
 
-                        <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-300">
-                            {{ $category->description }}
-                        </p>
+                        @if($category->description)
+                            <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-300">
+                                {{ $category->description }}
+                            </p>
+                        @endif
 
-                        <div class="mt-5 inline-flex items-center text-sm font-bold text-green-300 transition group-hover:text-green-200">
+                        <div
+                            class="mt-5 inline-flex items-center text-sm font-bold text-green-300 transition group-hover:text-green-200">
                             Browse category
                             <span class="ml-2 transition group-hover:translate-x-1">→</span>
                         </div>
@@ -177,15 +227,18 @@
 
     <section class="bg-white">
         <div class="mx-auto max-w-7xl px-4 py-14">
-            <div class="flex items-end justify-between gap-4">
+            <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <h2 class="text-3xl font-bold">Featured equipment</h2>
-                    <p class="mt-2 text-slate-600">Selected machines for farms and contractors.</p>
+                    <div class="text-sm font-bold uppercase tracking-wide text-green-700">Featured inventory</div>
+                    <h2 class="mt-2 text-3xl font-black">Selected equipment</h2>
+                    <p class="mt-2 max-w-2xl text-slate-600">
+                        Review available equipment and request pricing, condition details or delivery information.
+                    </p>
                 </div>
 
                 <a href="{{ route('catalog.index') }}"
-                   class="hidden rounded-xl border px-5 py-3 text-sm font-semibold hover:bg-slate-50 md:inline-flex">
-                    Browse catalog
+                   class="inline-flex rounded-2xl border px-5 py-3 text-sm font-bold hover:bg-slate-50">
+                    Browse inventory
                 </a>
             </div>
 
@@ -193,40 +246,163 @@
                 @forelse($featuredProducts as $product)
                     @include('front.components.product-card', ['product' => $product])
                 @empty
-                    <p class="text-slate-600">No featured equipment yet.</p>
+                    <div class="rounded-3xl border bg-slate-50 p-8">
+                        <h3 class="text-xl font-bold">No featured equipment yet</h3>
+                        <p class="mt-3 text-slate-600">
+                            Contact us to ask about current inventory and upcoming equipment.
+                        </p>
+
+                        <a href="{{ route('contact.index') }}"
+                           class="mt-5 inline-flex rounded-2xl bg-green-700 px-5 py-3 text-sm font-bold text-white hover:bg-green-800">
+                            Contact us
+                        </a>
+                    </div>
                 @endforelse
             </div>
         </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-14">
-        <div class="rounded-3xl bg-slate-900 p-8 text-white md:p-12">
-            <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div class="grid gap-6 md:grid-cols-3">
+            <a href="{{ route('pages.service') }}"
+               class="rounded-3xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Service</div>
+                <h3 class="mt-3 text-xl font-black">Equipment support</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Ask about maintenance, attachments, equipment condition and practical support before or after
+                    purchase.
+                </p>
+            </a>
+
+            <a href="{{ route('pages.delivery') }}"
+               class="rounded-3xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Delivery</div>
+                <h3 class="mt-3 text-xl font-black">Transport questions</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Share your delivery location and equipment interest so available delivery options can be reviewed.
+                </p>
+            </a>
+
+            <a href="{{ route('pages.warranty') }}"
+               class="rounded-3xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Warranty</div>
+                <h3 class="mt-3 text-xl font-black">Verify terms</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Confirm warranty availability, condition notes, included items and final terms before purchase.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14">
+        <div class="overflow-hidden rounded-[2rem] bg-slate-900 text-white shadow-xl">
+            <div class="grid gap-8 p-8 md:grid-cols-[1fr_360px] md:p-12">
                 <div>
-                    <h2 class="text-3xl font-bold">Need several machines?</h2>
-                    <p class="mt-3 max-w-2xl text-slate-300">
-                        Add equipment to your quote list and send one request with all selected machines.
+                    <div class="text-sm font-bold uppercase tracking-wide text-green-300">How quotes work</div>
+                    <h2 class="mt-3 text-3xl font-black">Request pricing and availability without pressure.</h2>
+                    <p class="mt-4 max-w-2xl leading-7 text-slate-300">
+                        Choose a machine, send a quote request, or build a quote list with multiple items. We will
+                        review
+                        your request and help confirm current availability, pricing, condition and next steps.
                     </p>
                 </div>
 
-                <a href="{{ route('quote.index') }}"
-                   class="rounded-xl bg-green-600 px-6 py-3 text-center font-semibold hover:bg-green-700">
-                    Open quote list
-                </a>
+                <div class="space-y-3">
+                    <a href="{{ route('quote.index') }}"
+                       class="block rounded-2xl bg-green-600 px-6 py-3.5 text-center text-sm font-black text-white hover:bg-green-700">
+                        Open quote list
+                    </a>
+
+                    <a href="{{ route('contact.index') }}"
+                       class="block rounded-2xl bg-white px-6 py-3.5 text-center text-sm font-black text-slate-900 hover:bg-slate-100">
+                        Contact us
+                    </a>
+
+                    <a href="tel:{{ config('site.phone_tel') }}"
+                       class="block rounded-2xl border border-white/20 px-6 py-3.5 text-center text-sm font-black text-white hover:bg-white/10">
+                        Call {{ config('site.phone') }}
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-14">
-        <div>
-            <h2 class="text-3xl font-bold">Latest arrivals</h2>
-            <p class="mt-2 text-slate-600">Recently added agricultural machines.</p>
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Recently added</div>
+                <h2 class="mt-2 text-3xl font-black">Latest inventory</h2>
+                <p class="mt-2 max-w-2xl text-slate-600">
+                    Recently added equipment listings from {{ config('site.name') }}.
+                </p>
+            </div>
+
+            <a href="{{ route('catalog.index') }}"
+               class="inline-flex rounded-2xl border bg-white px-5 py-3 text-sm font-bold hover:bg-slate-50">
+                View all inventory
+            </a>
         </div>
 
         <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            @foreach($latestProducts as $product)
+            @forelse($latestProducts as $product)
                 @include('front.components.product-card', ['product' => $product])
-            @endforeach
+            @empty
+                <div class="rounded-3xl border bg-white p-8 shadow-sm">
+                    <h3 class="text-xl font-bold">No inventory listed yet</h3>
+                    <p class="mt-3 text-slate-600">
+                        Contact {{ config('site.name') }} to ask about available equipment.
+                    </p>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14">
+        <div class="grid gap-8 rounded-[2rem] border bg-white p-8 shadow-sm md:grid-cols-[1fr_360px] md:p-10">
+            <div>
+                <div class="text-sm font-bold uppercase tracking-wide text-green-700">Visit or contact</div>
+                <h2 class="mt-3 text-3xl font-black">{{ config('site.name') }}</h2>
+
+                <p class="mt-4 max-w-2xl leading-7 text-slate-600">
+                    We are located at {{ config('site.address') }}. Before visiting, call or send a message to confirm
+                    the equipment you are interested in is currently available.
+                </p>
+
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ route('contact.index') }}"
+                       class="rounded-2xl bg-green-700 px-5 py-3 text-sm font-bold text-white hover:bg-green-800">
+                        Contact us
+                    </a>
+
+                    <a href="{{ route('catalog.index') }}"
+                       class="rounded-2xl border bg-white px-5 py-3 text-sm font-bold hover:bg-slate-50">
+                        View inventory
+                    </a>
+                </div>
+            </div>
+
+            <div class="rounded-3xl bg-slate-50 p-6">
+                <div class="space-y-4 text-sm text-slate-700">
+                    <div>
+                        <div class="font-bold text-slate-950">Phone</div>
+                        <a href="tel:{{ config('site.phone_tel') }}" class="mt-1 inline-block hover:text-green-700">
+                            {{ config('site.phone') }}
+                        </a>
+                    </div>
+
+                    <div>
+                        <div class="font-bold text-slate-950">Email</div>
+                        <a href="mailto:{{ config('site.email') }}" class="mt-1 inline-block hover:text-green-700">
+                            {{ config('site.email') }}
+                        </a>
+                    </div>
+
+                    <div>
+                        <div class="font-bold text-slate-950">Address</div>
+                        <div class="mt-1">{{ config('site.address') }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 @endsection

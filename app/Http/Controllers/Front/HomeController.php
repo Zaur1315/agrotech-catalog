@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
@@ -18,10 +19,17 @@ final class HomeController extends Controller
             ->orderBy('name')
             ->get();
 
+        $availableProductsCount = Product::query()
+            ->where('is_active', true)
+            ->where('status', Product::STATUS_AVAILABLE)
+            ->count();
+
         $featuredProducts = Product::query()
             ->with(['category', 'brand'])
             ->where('is_active', true)
+            ->where('status', Product::STATUS_AVAILABLE)
             ->where('is_featured', true)
+            ->orderBy('sort_order')
             ->latest()
             ->limit(6)
             ->get();
@@ -29,12 +37,14 @@ final class HomeController extends Controller
         $latestProducts = Product::query()
             ->with(['category', 'brand'])
             ->where('is_active', true)
+            ->where('status', Product::STATUS_AVAILABLE)
             ->latest()
             ->limit(6)
             ->get();
 
         return view('front.home.index', [
             'categories' => $categories,
+            'availableProductsCount' => $availableProductsCount,
             'featuredProducts' => $featuredProducts,
             'latestProducts' => $latestProducts,
         ]);

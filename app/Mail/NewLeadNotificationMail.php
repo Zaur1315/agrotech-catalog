@@ -16,8 +16,7 @@ final class NewLeadNotificationMail extends Mailable
 
     public function __construct(
         public readonly Lead $lead,
-    )
-    {
+    ) {
     }
 
     public function build(): self

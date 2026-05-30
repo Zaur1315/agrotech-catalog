@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Requests\Lead;
 
 use App\Models\Lead;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 final class StoreProductLeadRequest extends FormRequest
 {
@@ -19,6 +21,11 @@ final class StoreProductLeadRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'website' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'name' => [
                 'required',
                 'string',
@@ -61,5 +68,14 @@ final class StoreProductLeadRequest extends FormRequest
             'phone.required' => 'Please enter your phone number.',
             'email.email' => 'Please enter a valid email address.',
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            if ($this->filled('website')) {
+                $validator->errors()->add('website', 'Invalid form submission.');
+            }
+        });
     }
 }

@@ -34,7 +34,7 @@ final class LeadsTable
 
                 TextColumn::make('type')
                     ->badge()
-                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                    ->formatStateUsing(static fn (?string $state): string => match ($state) {
                         Lead::TYPE_GENERAL => 'General',
                         Lead::TYPE_QUOTE => 'Quote',
                         Lead::TYPE_PRODUCT_QUESTION => 'Product question',
@@ -43,7 +43,7 @@ final class LeadsTable
                         Lead::TYPE_FINANCING => 'Financing',
                         default => '-',
                     })
-                    ->color(static fn(?string $state): string => match ($state) {
+                    ->color(static fn (?string $state): string => match ($state) {
                         Lead::TYPE_QUOTE,
                         Lead::TYPE_PRODUCT_QUESTION => 'success',
                         Lead::TYPE_SERVICE,
@@ -61,14 +61,14 @@ final class LeadsTable
 
                 TextColumn::make('status')
                     ->badge()
-                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                    ->formatStateUsing(static fn (?string $state): string => match ($state) {
                         Lead::STATUS_NEW => 'New',
                         Lead::STATUS_IN_PROGRESS => 'In progress',
                         Lead::STATUS_CLOSED => 'Closed',
                         Lead::STATUS_SPAM => 'Spam',
                         default => '-',
                     })
-                    ->color(static fn(?string $state): string => match ($state) {
+                    ->color(static fn (?string $state): string => match ($state) {
                         Lead::STATUS_NEW => 'info',
                         Lead::STATUS_IN_PROGRESS => 'warning',
                         Lead::STATUS_CLOSED => 'success',
@@ -95,7 +95,7 @@ final class LeadsTable
                 TextColumn::make('preferred_contact_method')
                     ->label('Contact by')
                     ->badge()
-                    ->formatStateUsing(static fn(?string $state): string => match ($state) {
+                    ->formatStateUsing(static fn (?string $state): string => match ($state) {
                         Lead::PREFERRED_CONTACT_PHONE => 'Phone',
                         Lead::PREFERRED_CONTACT_EMAIL => 'Email',
                         Lead::PREFERRED_CONTACT_ANY => 'Any',

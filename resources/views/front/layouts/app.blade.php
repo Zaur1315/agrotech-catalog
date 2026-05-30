@@ -10,6 +10,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('/site.webmanifest') }}">
 
+    @include('front.partials.meta.pixel-head')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900">
@@ -18,9 +20,11 @@
 @endphp
 <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 lg:gap-6 lg:py-4">
-        <a href="{{ route('home') }}" class="flex min-w-0 items-center gap-3 text-lg font-extrabold text-slate-950 md:text-xl">
+        <a href="{{ route('home') }}"
+           class="flex min-w-0 items-center gap-3 text-lg font-extrabold text-slate-950 md:text-xl">
             <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100">
-                <img src="{{ asset('/images/logo.png') }}" alt="{{ config('site.name') }} logo" class="h-full w-full object-contain">
+                <img src="{{ asset('/images/logo.png') }}" alt="{{ config('site.name') }} logo"
+                     class="h-full w-full object-contain">
             </span>
 
             <span class="truncate">
@@ -41,7 +45,8 @@
 
         <div class="flex shrink-0 items-center gap-2 lg:gap-3">
             <details class="group lg:hidden">
-                <summary class="flex cursor-pointer list-none items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-900 shadow-sm transition hover:border-green-700 hover:text-green-700 [&::-webkit-details-marker]:hidden">
+                <summary
+                    class="flex cursor-pointer list-none items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-900 shadow-sm transition hover:border-green-700 hover:text-green-700 [&::-webkit-details-marker]:hidden">
                     <span class="sr-only">Open menu</span>
 
                     <span class="grid h-5 w-5 place-items-center">
@@ -50,29 +55,35 @@
                     </span>
                 </summary>
 
-                <div class="fixed left-4 right-4 top-[76px] z-50 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/20">
+                <div
+                    class="fixed left-4 right-4 top-[76px] z-50 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/20">
                     <nav class="grid p-2 text-sm font-bold text-slate-800">
                         <a href="{{ route('home') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Home
                         </a>
 
-                        <a href="{{ route('catalog.index') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('catalog.index') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Inventory
                         </a>
 
-                        <a href="{{ route('pages.service') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('pages.service') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Service
                         </a>
 
-                        <a href="{{ route('pages.delivery') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('pages.delivery') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Delivery
                         </a>
 
-                        <a href="{{ route('pages.warranty') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('pages.warranty') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Warranty
                         </a>
 
-                        <a href="{{ route('pages.about') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('pages.about') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             About
                         </a>
 
@@ -80,7 +91,8 @@
                             FAQ
                         </a>
 
-                        <a href="{{ route('contact.index') }}" class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
+                        <a href="{{ route('contact.index') }}"
+                           class="rounded-2xl px-4 py-3 transition hover:bg-slate-100">
                             Contact
                         </a>
 
@@ -110,7 +122,8 @@
                 <span>Quote List</span>
 
                 @if($quoteCount > 0)
-                    <span class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-green-500 px-1.5 text-xs font-black text-white">
+                    <span
+                        class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-green-500 px-1.5 text-xs font-black text-white">
                         {{ $quoteCount }}
                     </span>
                 @endif
@@ -227,5 +240,10 @@
         </div>
     </div>
 </footer>
+
+@stack('meta_pixel_events')
+
+@include('front.partials.meta.pixel-body-end')
+
 </body>
 </html>

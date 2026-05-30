@@ -13,8 +13,7 @@ final readonly class ProductLeadService
 {
     public function __construct(
         private LeadNotificationService $leadNotificationService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -33,7 +32,9 @@ final readonly class ProductLeadService
      *     utm_medium?:string|null,
      *     utm_campaign?:string|null,
      *     utm_content?:string|null,
-     *     utm_term?:string|null
+     *     utm_term?:string|null,
+     *     fbp?:string|null,
+     *     fbc?:string|null
      * } $context
      * @throws \Throwable
      */
@@ -57,6 +58,8 @@ final readonly class ProductLeadService
                 'utm_campaign' => $context['utm_campaign'] ?? null,
                 'utm_content' => $context['utm_content'] ?? null,
                 'utm_term' => $context['utm_term'] ?? null,
+                'fbp' => $context['fbp'] ?? null,
+                'fbc' => $context['fbc'] ?? null,
                 'ip_address' => $context['ip_address'] ?? null,
                 'user_agent' => $context['user_agent'] ?? null,
             ]);
@@ -91,7 +94,9 @@ final readonly class ProductLeadService
      *     utm_medium?:string|null,
      *     utm_campaign?:string|null,
      *     utm_content?:string|null,
-     *     utm_term?:string|null
+     *     utm_term?:string|null,
+     *     fbp?:string|null,
+     *     fbc?:string|null
      * } $context
      * @throws \Throwable
      */
@@ -115,6 +120,8 @@ final readonly class ProductLeadService
                 'utm_campaign' => $context['utm_campaign'] ?? null,
                 'utm_content' => $context['utm_content'] ?? null,
                 'utm_term' => $context['utm_term'] ?? null,
+                'fbp' => $context['fbp'] ?? null,
+                'fbc' => $context['fbc'] ?? null,
                 'ip_address' => $context['ip_address'] ?? null,
                 'user_agent' => $context['user_agent'] ?? null,
             ]);
