@@ -187,7 +187,7 @@
             </a>
         </div>
 
-        <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+        <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             @foreach($categories as $category)
                 <a
                     href="{{ route('catalog.category', $category) }}"

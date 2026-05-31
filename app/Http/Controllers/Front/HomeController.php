@@ -29,9 +29,9 @@ final class HomeController extends Controller
             ->where('is_active', true)
             ->where('status', Product::STATUS_AVAILABLE)
             ->where('is_featured', true)
-            ->orderBy('sort_order')
-            ->latest()
-            ->limit(6)
+            ->orderByDesc('sort_order')
+            ->orderByDesc('id')
+            ->limit(3)
             ->get();
 
         $latestProducts = Product::query()

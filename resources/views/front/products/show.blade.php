@@ -62,16 +62,132 @@
             </div>
 
             @if($product->images->isNotEmpty())
-                <div class="mt-4 grid grid-cols-4 gap-3">
-                    @foreach($product->images as $image)
-                        <img
-                            src="{{ $image->url }}"
-                            alt="{{ $image->alt ?? $product->name }}"
-                            class="aspect-square rounded-2xl border object-cover shadow-sm"
+                <div
+                    x-data="productGallery({
+                        images: @js($product->images->map(fn ($image) => [
+                            'full' => $image->url,
+                            'thumb' => $image->thumbnail_url,
+                            'alt' => $image->alt ?? $product->name,
+                        ])->values()),
+                        visibleCount: 8
+                    })"
+                    x-on:keydown.window.escape="close()"
+                    x-on:keydown.window.arrow-left="previous()"
+                    x-on:keydown.window.arrow-right="next()"
+                    class="mt-4"
+                >
+                    <div class="grid grid-cols-4 gap-3">
+                        <template x-for="(image, imageIndex) in visibleImages" x-bind:key="image.full">
+                            <button
+                                type="button"
+                                x-on:click="open(imageIndex)"
+                                class="block overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                            >
+                                <img
+                                    x-bind:src="image.thumb"
+                                    x-bind:alt="image.alt"
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="aspect-square w-full object-cover"
+                                >
+                            </button>
+                        </template>
+                    </div>
+
+                    <template x-if="images.length > visibleCount">
+                        <div class="mt-4 flex justify-center">
+                            <button
+                                type="button"
+                                x-on:click="toggleExpanded()"
+                                class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-800 shadow-sm transition hover:border-green-700 hover:bg-green-50 hover:text-green-700"
+                            >
+                                <span x-text="isExpanded ? 'Show fewer photos' : 'Show all photos'"></span>
+
+                                <span
+                                    class="text-lg leading-none transition-transform"
+                                    x-bind:class="isExpanded ? 'rotate-180' : ''"
+                                >
+                        ↓
+                    </span>
+                            </button>
+                        </div>
+                    </template>
+
+                    <div
+                        x-show="isOpen"
+                        x-cloak
+                        class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 p-3 md:p-6"
+                        role="dialog"
+                        aria-modal="true"
+                    >
+                        <button
+                            type="button"
+                            x-on:click="close()"
+                            class="absolute right-4 top-4 z-10 rounded-full bg-white/10 px-4 py-2 text-sm font-black text-white backdrop-blur transition hover:bg-white/20"
                         >
-                    @endforeach
+                            Close
+                        </button>
+
+                        <button
+                            type="button"
+                            x-on:click="previous()"
+                            class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 px-4 py-3 text-2xl font-black text-white backdrop-blur transition hover:bg-white/20 md:left-6"
+                            aria-label="Previous image"
+                        >
+                            ‹
+                        </button>
+
+                        <div class="flex max-h-full w-full max-w-6xl flex-col items-center gap-4">
+                            <img
+                                x-bind:src="currentImage.full"
+                                x-bind:alt="currentImage.alt"
+                                class="max-h-[78vh] w-auto max-w-full rounded-3xl object-contain shadow-2xl"
+                            >
+
+                            <div class="w-full max-w-5xl overflow-hidden px-10">
+                                <div
+                                    x-ref="lightboxThumbnails"
+                                    class="flex gap-2 overflow-x-auto scroll-smooth px-1 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                                >
+                                    <template x-for="(image, imageIndex) in images" x-bind:key="image.full">
+                                        <button
+                                            type="button"
+                                            x-on:click="setCurrentIndex(imageIndex)"
+                                            x-bind:data-gallery-index="imageIndex"
+                                            class="h-16 w-16 shrink-0 overflow-hidden rounded-xl border transition md:h-20 md:w-20"
+                                            x-bind:class="currentIndex === imageIndex ? 'border-green-400 ring-2 ring-green-400' : 'border-white/20 opacity-70 hover:opacity-100'"
+                                        >
+                                            <img
+                                                x-bind:src="image.thumb"
+                                                x-bind:alt="image.alt"
+                                                class="h-full w-full object-cover"
+                                                loading="lazy"
+                                                decoding="async"
+                                            >
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="text-sm font-bold text-white/80">
+                                <span x-text="currentIndex + 1"></span>
+                                /
+                                <span x-text="images.length"></span>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            x-on:click="next()"
+                            class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 px-4 py-3 text-2xl font-black text-white backdrop-blur transition hover:bg-white/20 md:right-6"
+                            aria-label="Next image"
+                        >
+                            ›
+                        </button>
+                    </div>
                 </div>
             @endif
+
         </div>
 
         <div>
@@ -322,6 +438,8 @@
                                 class="hidden"
                             >
 
+                            @include('front.components.form.meta-tracking-fields')
+
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                             @include('front.components.form.input', [
@@ -345,6 +463,13 @@
                                 'placeholder' => 'john@example.com',
                             ])
 
+                            @include('front.components.form.input', [
+                                'label' => 'ZIP code',
+                                'name' => 'zip_code',
+                                'placeholder' => '26679',
+                                'required' => true,
+                            ])
+
                             @include('front.components.form.preferred-contact-method')
 
                             @include('front.components.form.textarea', [
@@ -353,6 +478,8 @@
                                 'rows' => 5,
                                 'value' => 'I am interested in ' . $product->name . '.',
                             ])
+
+                            @include('front.components.form.consent-checkbox')
 
                             <button
                                 type="submit"
@@ -447,6 +574,7 @@
                     'content_ids' => $metaViewContentEvent['content_ids'],
                     'content_type' => $metaViewContentEvent['content_type'],
                     'content_name' => $metaViewContentEvent['content_name'],
+                    'content_category' => $metaViewContentEvent['content_category'],
                     'value' => $metaViewContentEvent['value'],
                     'currency' => $metaViewContentEvent['currency'],
                 ];

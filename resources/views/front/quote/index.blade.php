@@ -111,6 +111,8 @@
                         class="hidden"
                     >
 
+                    @include('front.components.form.meta-tracking-fields')
+
                     @include('front.components.form.input', [
                         'label' => 'Full name',
                         'name' => 'name',
@@ -132,6 +134,13 @@
                         'placeholder' => 'john@example.com',
                     ])
 
+                    @include('front.components.form.input', [
+                        'label' => 'ZIP code',
+                        'name' => 'zip_code',
+                        'placeholder' => '26679',
+                        'required' => true,
+                    ])
+
                     @include('front.components.form.preferred-contact-method')
 
                     @include('front.components.form.textarea', [
@@ -140,6 +149,8 @@
                         'rows' => 5,
                         'placeholder' => 'Tell us more about your farm, delivery location or financing needs.',
                     ])
+
+                    @include('front.components.form.consent-checkbox')
 
                     <button
                         type="submit"

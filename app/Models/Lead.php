@@ -30,6 +30,8 @@ final class Lead extends Model
         'name',
         'email',
         'phone',
+        'zip_code',
+        'consent_accepted',
         'preferred_contact_method',
         'subject',
         'message',
@@ -48,6 +50,7 @@ final class Lead extends Model
     ];
 
     protected $casts = [
+        'consent_accepted' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

@@ -10,8 +10,7 @@ final readonly class ContactLeadService
 {
     public function __construct(
         private LeadNotificationService $leadNotificationService,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array{
@@ -20,6 +19,8 @@ final readonly class ContactLeadService
      *     email?:string|null,
      *     subject?:string|null,
      *     message?:string|null,
+     *     zip_code:string,
+     *     consent_accepted:bool|string|int,
      *     preferred_contact_method?:string|null
      * } $data
      * @param array{
@@ -32,7 +33,7 @@ final readonly class ContactLeadService
      *     utm_content?:string|null,
      *     utm_term?:string|null,
      *     fbp?:string|null,
-     *     fbc?:string|null
+     *     fbc?:string|null,
      * } $context
      */
     public function create(array $data, array $context = []): Lead
@@ -43,6 +44,8 @@ final readonly class ContactLeadService
             'name' => $data['name'],
             'email' => $data['email'] ?? null,
             'phone' => $data['phone'],
+            'zip_code' => $data['zip_code'],
+            'consent_accepted' => (bool) ($data['consent_accepted'] ?? false),
             'preferred_contact_method' => $data['preferred_contact_method'] ?? Lead::PREFERRED_CONTACT_ANY,
             'subject' => $data['subject'] ?: 'Contact request',
             'message' => $data['message'] ?? null,

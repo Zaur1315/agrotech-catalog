@@ -22,6 +22,8 @@ final readonly class ProductLeadService
      *     phone:string,
      *     email?:string|null,
      *     message?:string|null,
+     *     zip_code:string,
+     *     consent_accepted:bool|string|int,
      *     preferred_contact_method?:string|null
      * } $data
      * @param array{
@@ -47,6 +49,8 @@ final readonly class ProductLeadService
                 'name' => $data['name'],
                 'email' => $data['email'] ?? null,
                 'phone' => $data['phone'],
+                'zip_code' => $data['zip_code'],
+                'consent_accepted' => (bool) ($data['consent_accepted'] ?? false),
                 'preferred_contact_method' => $data['preferred_contact_method'] ?? Lead::PREFERRED_CONTACT_ANY,
                 'subject' => sprintf('Quote request: %s', $product->name),
                 'message' => $data['message'] ?? null,
@@ -84,6 +88,8 @@ final readonly class ProductLeadService
      *     phone:string,
      *     email?:string|null,
      *     message?:string|null,
+     *     zip_code:string,
+     *     consent_accepted:bool|string|int,
      *     preferred_contact_method?:string|null
      * } $data
      * @param array{
@@ -109,6 +115,8 @@ final readonly class ProductLeadService
                 'name' => $data['name'],
                 'email' => $data['email'] ?? null,
                 'phone' => $data['phone'],
+                'zip_code' => $data['zip_code'],
+                'consent_accepted' => (bool) ($data['consent_accepted'] ?? false),
                 'preferred_contact_method' => $data['preferred_contact_method'] ?? Lead::PREFERRED_CONTACT_ANY,
                 'subject' => 'Quote request',
                 'message' => $data['message'] ?? null,

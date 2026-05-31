@@ -143,6 +143,10 @@ final class ProductForm
                             ->directory('products/main')
                             ->visibility('public')
                             ->disk('public')
+                            ->imagePreviewHeight('180')
+                            ->openable()
+                            ->downloadable()
+                            ->previewable(true)
                             ->columnSpanFull(),
 
                         Repeater::make('images')
@@ -154,6 +158,10 @@ final class ProductForm
                                     ->directory('products/gallery')
                                     ->visibility('public')
                                     ->disk('public')
+                                    ->imagePreviewHeight('120')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->previewable(true)
                                     ->required(),
 
                                 TextInput::make('alt')

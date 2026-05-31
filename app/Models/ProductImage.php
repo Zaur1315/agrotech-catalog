@@ -12,6 +12,7 @@ final class ProductImage extends Model
     protected $fillable = [
         'product_id',
         'path',
+        'thumbnail_path',
         'alt',
         'sort_order',
     ];
@@ -41,5 +42,22 @@ final class ProductImage extends Model
         }
 
         return asset('storage/' . ltrim($this->path, '/'));
+    }
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        if ($this->thumbnail_path === null || $this->thumbnail_path === '') {
+            return $this->url;
+        }
+
+        if (str_starts_with($this->thumbnail_path, 'http://') || str_starts_with($this->thumbnail_path, 'https://')) {
+            return $this->thumbnail_path;
+        }
+
+        if (str_starts_with($this->thumbnail_path, 'images/')) {
+            return asset($this->thumbnail_path);
+        }
+
+        return asset('storage/' . ltrim($this->thumbnail_path, '/'));
     }
 }

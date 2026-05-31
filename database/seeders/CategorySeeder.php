@@ -14,31 +14,35 @@ final class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Tractors',
-                'description' => 'Reliable tractors for farms, fields, and heavy-duty agricultural work.',
+                'name' => 'Backhoes',
+                'description' => 'Used backhoe loaders for digging, trenching, loading and jobsite utility work.',
                 'sort_order' => 1,
             ],
             [
-                'name' => 'Harvesters',
-                'description' => 'High-performance harvesting machines for modern agriculture.',
+                'name' => 'Wheel Loaders',
+                'description' => 'Wheel loaders for material handling, loading, site work and commercial equipment operations.',
                 'sort_order' => 2,
             ],
             [
-                'name' => 'Utility Vehicles',
-                'description' => 'Compact and durable utility vehicles for farm transportation.',
+                'name' => 'Skid Steer Loaders',
+                'description' => 'Tracked skid steer loaders for grading, loading, land work and compact jobsite access.',
                 'sort_order' => 3,
             ],
             [
-                'name' => 'Balers',
-                'description' => 'Efficient balers for hay, straw, and forage operations.',
+                'name' => 'Tractors',
+                'description' => 'MFWD tractors for farm, field, hay, loader and utility applications.',
                 'sort_order' => 4,
             ],
-            [
-                'name' => 'Attachments',
-                'description' => 'Agricultural attachments and implements for different field tasks.',
-                'sort_order' => 5,
-            ],
         ];
+
+        $allowedSlugs = collect($categories)
+            ->pluck('name')
+            ->map(static fn (string $name): string => Str::slug($name))
+            ->all();
+
+        Category::query()
+            ->whereNotIn('slug', $allowedSlugs)
+            ->delete();
 
         foreach ($categories as $category) {
             Category::query()->updateOrCreate(

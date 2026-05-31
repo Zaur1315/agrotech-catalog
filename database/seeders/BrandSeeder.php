@@ -14,26 +14,39 @@ final class BrandSeeder extends Seeder
     {
         $brands = [
             [
-                'name' => 'John Deere',
-                'description' => 'Agricultural machinery and heavy-duty farm equipment.',
+                'name' => 'Caterpillar',
+                'description' => 'Heavy equipment for construction, utility, loader and backhoe applications.',
             ],
             [
-                'name' => 'Kubota',
-                'description' => 'Compact tractors, utility vehicles, and agricultural machinery.',
+                'name' => 'Case',
+                'description' => 'Backhoes, tractors and jobsite equipment for agricultural and commercial use.',
+            ],
+            [
+                'name' => 'Komatsu',
+                'description' => 'Construction and material handling equipment for demanding working conditions.',
+            ],
+            [
+                'name' => 'Bobcat',
+                'description' => 'Compact equipment and tracked loaders for jobsite, land and utility work.',
+            ],
+            [
+                'name' => 'John Deere',
+                'description' => 'Agricultural tractors, compact loaders and equipment for farm and field operations.',
             ],
             [
                 'name' => 'New Holland',
-                'description' => 'Modern farming equipment for harvesting, baling, and field work.',
-            ],
-            [
-                'name' => 'Case IH',
-                'description' => 'Powerful machines for professional agricultural operations.',
-            ],
-            [
-                'name' => 'Massey Ferguson',
-                'description' => 'Reliable tractors and farm equipment for different workloads.',
+                'description' => 'Farm tractors and agricultural equipment for field, loader and utility work.',
             ],
         ];
+
+        $allowedSlugs = collect($brands)
+            ->pluck('name')
+            ->map(static fn (string $name): string => Str::slug($name))
+            ->all();
+
+        Brand::query()
+            ->whereNotIn('slug', $allowedSlugs)
+            ->delete();
 
         foreach ($brands as $brand) {
             Brand::query()->updateOrCreate(

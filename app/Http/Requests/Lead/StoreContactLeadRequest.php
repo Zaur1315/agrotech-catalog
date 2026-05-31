@@ -26,6 +26,8 @@ final class StoreContactLeadRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'fbp' => ['nullable', 'string', 'max:255'],
+            'fbc' => ['nullable', 'string', 'max:255'],
             'name' => [
                 'required',
                 'string',
@@ -34,12 +36,21 @@ final class StoreContactLeadRequest extends FormRequest
             'phone' => [
                 'required',
                 'string',
-                'max:255',
+                'regex:/^\D*(\d\D*){10}$/',
+                'max:30',
+            ],
+            'zip_code' => [
+                'required',
+                'string',
+                'regex:/^\d{5}$/',
+            ],
+            'consent_accepted' => [
+                'accepted',
             ],
             'preferred_contact_method' => [
                 'nullable',
                 'string',
-                'in:' . implode(',', [
+                'in:'.implode(',', [
                     Lead::PREFERRED_CONTACT_PHONE,
                     Lead::PREFERRED_CONTACT_EMAIL,
                     Lead::PREFERRED_CONTACT_ANY,

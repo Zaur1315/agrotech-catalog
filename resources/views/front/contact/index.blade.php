@@ -36,6 +36,8 @@
                             class="hidden"
                         >
 
+                        @include('front.components.form.meta-tracking-fields')
+
                         <div class="grid gap-5 md:grid-cols-2">
                             @include('front.components.form.input', [
                                 'label' => 'Full name',
@@ -67,7 +69,16 @@
                             ])
                         </div>
 
-                        @include('front.components.form.preferred-contact-method')
+                        <div class="grid gap-5 md:grid-cols-2">
+                            @include('front.components.form.input', [
+                                'label' => 'ZIP code',
+                                'name' => 'zip_code',
+                                'placeholder' => '26679',
+                                'required' => true,
+                            ])
+
+                            @include('front.components.form.preferred-contact-method')
+                        </div>
 
                         @include('front.components.form.textarea', [
                             'label' => 'Message',
@@ -75,6 +86,8 @@
                             'rows' => 6,
                             'placeholder' => 'Tell us what equipment you are looking for, where you are located, and whether you need delivery or service information.',
                         ])
+
+                        @include('front.components.form.consent-checkbox')
 
                         <button
                             type="submit"

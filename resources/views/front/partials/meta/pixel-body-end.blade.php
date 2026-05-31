@@ -14,18 +14,19 @@
     @endif
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof fbq !== 'function') {
-                return;
-            }
+        if (typeof fbq === 'function') {
+            const leadName = @json($metaEvent['customer_name'] ?? '');
+            const nameParts = typeof leadName === 'string' ? leadName.trim().split(/\s+/) : [];
 
-            document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').forEach(function (link) {
-                link.addEventListener('click', function () {
-                    fbq('trackCustom', 'ContactClick', {
-                        contact_type: link.href.startsWith('tel:') ? 'phone' : 'email'
-                    });
-                });
+            fbq('track', 'Lead', {}, {
+                eventID: @json($metaEvent['event_id'] ?? null),
+                em: @json($metaEvent['email'] ?? null),
+                ph: @json(isset($metaEvent['phone']) ? preg_replace('/\D+/', '', $metaEvent['phone']) : null),
+                fn: nameParts[0] ? nameParts[0].toLowerCase() : null,
+                ln: nameParts.length > 1 ? nameParts[nameParts.length - 1].toLowerCase() : null,
+                fbp: @json($metaEvent['fbp'] ?? null),
+                fbc: @json($metaEvent['fbc'] ?? null)
             });
-        });
+        }
     </script>
 @endif

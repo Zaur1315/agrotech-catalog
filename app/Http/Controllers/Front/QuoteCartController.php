@@ -77,6 +77,12 @@ final class QuoteCartController extends Controller
         return redirect()
             ->route('quote.index')
             ->with('success', 'Thank you! Your quote request has been sent successfully.')
-            ->with('meta_event', $metaEvent);
+            ->with('meta_event', array_merge($metaEvent, [
+                'email' => $lead->email,
+                'phone' => $lead->phone,
+                'customer_name' => $lead->name,
+                'fbp' => $lead->fbp,
+                'fbc' => $lead->fbc,
+            ]));
     }
 }
