@@ -576,7 +576,7 @@ final class ProductSeeder extends Seeder
 
         $files = collect(File::files($folderPath))
             ->filter(static fn ($file): bool => $file->getExtension() === 'webp')
-            ->reject(static fn ($file): bool => str_starts_with($file->getFilename(), 'thumb_'))
+            ->reject(static fn ($file): bool => str_starts_with($file->getFilename(), 'thumb_') || str_starts_with($file->getFilename(), 'medium_'))
             ->sortBy(static fn ($file): string => $file->getFilename())
             ->values();
 
@@ -585,11 +585,13 @@ final class ProductSeeder extends Seeder
 
             $imagePath = sprintf('products/%s/%s', $folder, $filename);
             $thumbnailPath = sprintf('products/%s/thumb_%s', $folder, $filename);
+            $mediumPath = sprintf('products/%s/medium_%s', $folder, $filename);
 
             ProductImage::query()->create([
                 'product_id' => $product->id,
                 'path' => $imagePath,
                 'thumbnail_path' => File::exists(storage_path('app/public/'.$thumbnailPath)) ? $thumbnailPath : null,
+                'medium_path' => File::exists(storage_path('app/public/' . $mediumPath)) ? $mediumPath : null,
                 'alt' => $product->name,
                 'sort_order' => $index + 1,
             ]);

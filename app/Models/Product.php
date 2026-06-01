@@ -11,16 +11,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class Product extends Model
 {
     public const CONDITION_NEW = 'new';
+
     public const CONDITION_USED = 'used';
+
     public const CONDITION_REFURBISHED = 'refurbished';
 
     public const STATUS_AVAILABLE = 'available';
+
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_SOLD = 'sold';
+
     public const STATUS_HIDDEN = 'hidden';
 
     public const DRIVE_TYPE_2WD = '2wd';
+
     public const DRIVE_TYPE_4WD = '4wd';
+
     public const DRIVE_TYPE_MFWD = 'mfwd';
 
     protected $fillable = [
@@ -91,7 +98,7 @@ final class Product extends Model
             return 'Price on request';
         }
 
-        return '$' . number_format((float)$this->price, 2);
+        return '$'.number_format((float) $this->price, 2);
     }
 
     public function getMainImageUrlAttribute(): string
@@ -108,6 +115,19 @@ final class Product extends Model
             return asset($this->main_image);
         }
 
-        return asset('storage/' . ltrim($this->main_image, '/'));
+        return asset('storage/'.ltrim($this->main_image, '/'));
+    }
+
+    public function getCardImageUrlAttribute(): string
+    {
+        $primaryImage = $this->images
+            ->sortBy('sort_order')
+            ->first();
+
+        if ($primaryImage instanceof ProductImage) {
+            return $primaryImage->medium_url;
+        }
+
+        return $this->main_image_url;
     }
 }

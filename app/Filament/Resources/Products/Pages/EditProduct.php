@@ -37,14 +37,15 @@ final class EditProduct extends EditRecord
                     return;
                 }
 
-                $thumbnailPath = $thumbnailService->create($image->path);
+                $derivatives = app(ProductImageThumbnailService::class)->createDerivatives($image->path);
 
-                if ($thumbnailPath === null) {
+                if ($derivatives === null) {
                     return;
                 }
 
                 $image->update([
-                    'thumbnail_path' => $thumbnailPath,
+                    'thumbnail_path' => $derivatives['thumbnail_path'],
+                    'medium_path' => $derivatives['medium_path'],
                 ]);
             });
     }

@@ -32,7 +32,9 @@
     <a href="{{ route('products.show', $product) }}" class="block">
         <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
             <img
-                src="{{ $product->main_image_url }}"
+                src="{{ $product->card_image_url }}"
+                loading="lazy"
+                decoding="async"
                 alt="{{ $product->name }}"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
             >

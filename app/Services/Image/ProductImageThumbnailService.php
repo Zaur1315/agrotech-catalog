@@ -4,70 +4,104 @@ declare(strict_types=1);
 
 namespace App\Services\Image;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use RuntimeException;
 
 final readonly class ProductImageThumbnailService
 {
     private const THUMBNAIL_PREFIX = 'thumb_';
 
+    private const MEDIUM_PREFIX = 'medium_';
+
     private const THUMBNAIL_WIDTH = 420;
 
-    private const THUMBNAIL_HEIGHT = 0;
+    private const MEDIUM_WIDTH = 1200;
+
+    private const AUTO_HEIGHT = 0;
 
     private const THUMBNAIL_QUALITY = 78;
 
-    public function create(string $imagePath): ?string
+    private const MEDIUM_QUALITY = 82;
+
+    /**
+     * @return array{thumbnail_path:string, medium_path:string}
+     */
+    public function createDerivatives(string $relativePath): array
     {
-        $imagePath = ltrim($imagePath, '/');
+        $thumbnailPath = $this->createDerivative(
+            relativePath: $relativePath,
+            prefix: self::THUMBNAIL_PREFIX,
+            width: self::THUMBNAIL_WIDTH,
+            quality: self::THUMBNAIL_QUALITY,
+        );
 
-        if ($imagePath === '' || str_starts_with(basename($imagePath), self::THUMBNAIL_PREFIX)) {
-            return null;
+        $mediumPath = $this->createDerivative(
+            relativePath: $relativePath,
+            prefix: self::MEDIUM_PREFIX,
+            width: self::MEDIUM_WIDTH,
+            quality: self::MEDIUM_QUALITY,
+        );
+
+        return [
+            'thumbnail_path' => $thumbnailPath,
+            'medium_path' => $mediumPath,
+        ];
+    }
+
+    public function createThumbnail(string $relativePath): string
+    {
+        return $this->createDerivative(
+            relativePath: $relativePath,
+            prefix: self::THUMBNAIL_PREFIX,
+            width: self::THUMBNAIL_WIDTH,
+            quality: self::THUMBNAIL_QUALITY,
+        );
+    }
+
+    public function createMedium(string $relativePath): string
+    {
+        return $this->createDerivative(
+            relativePath: $relativePath,
+            prefix: self::MEDIUM_PREFIX,
+            width: self::MEDIUM_WIDTH,
+            quality: self::MEDIUM_QUALITY,
+        );
+    }
+
+    private function createDerivative(string $relativePath, string $prefix, int $width, int $quality): string
+    {
+        $sourcePath = storage_path('app/public/'.ltrim($relativePath, '/'));
+
+        if (! File::exists($sourcePath)) {
+            throw new RuntimeException(sprintf('Source image does not exist: %s', $sourcePath));
         }
 
-        if (! Storage::disk('public')->exists($imagePath)) {
-            return null;
-        }
+        $directory = dirname($relativePath);
+        $filename = pathinfo($relativePath, PATHINFO_FILENAME);
 
-        $thumbnailPath = $this->thumbnailPath($imagePath);
+        $targetRelativePath = sprintf('%s/%s%s.webp', $directory, $prefix, $filename);
+        $targetPath = storage_path('app/public/'.$targetRelativePath);
 
-        if (Storage::disk('public')->exists($thumbnailPath)) {
-            return $thumbnailPath;
-        }
-
-        $sourcePath = Storage::disk('public')->path($imagePath);
-        $targetPath = Storage::disk('public')->path($thumbnailPath);
+        File::ensureDirectoryExists(dirname($targetPath));
 
         $command = sprintf(
             'cwebp -quiet -q %d -resize %d %d %s -o %s 2>&1',
-            self::THUMBNAIL_QUALITY,
-            self::THUMBNAIL_WIDTH,
-            self::THUMBNAIL_HEIGHT,
+            $quality,
+            $width,
+            self::AUTO_HEIGHT,
             escapeshellarg($sourcePath),
             escapeshellarg($targetPath),
         );
 
         exec($command, $output, $exitCode);
 
-        if ($exitCode !== 0 || ! file_exists($targetPath)) {
-            Log::warning('Product thumbnail generation failed.', [
-                'image_path' => $imagePath,
-                'thumbnail_path' => $thumbnailPath,
-                'exit_code' => $exitCode,
-                'output' => $output,
-            ]);
-
-            return null;
+        if ($exitCode !== 0) {
+            throw new RuntimeException(sprintf(
+                'Failed to create derivative image. Command output: %s',
+                implode(PHP_EOL, $output),
+            ));
         }
 
-        return $thumbnailPath;
-    }
-
-    public function thumbnailPath(string $imagePath): string
-    {
-        $directory = dirname($imagePath);
-        $filename = pathinfo($imagePath, PATHINFO_FILENAME);
-
-        return $directory.'/'.self::THUMBNAIL_PREFIX.$filename.'.webp';
+        return $targetRelativePath;
     }
 }
