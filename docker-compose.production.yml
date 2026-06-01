@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: agrotech-catalog-app:latest
+    container_name: agrotech_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    depends_on:
+      - db
+    networks:
+      - agrotech
+
+  queue:
+    image: agrotech-catalog-app:latest
+    container_name: agrotech_queue
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: php artisan queue:work --sleep=3 --tries=3 --timeout=90
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    depends_on:
+      - app
+      - db
+    networks:
+      - agrotech
+
+  db:
+    image: postgres:16-alpine
+    container_name: agrotech_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - agrotech_postgres_data:/var/lib/postgresql/data
+    networks:
+      - agrotech
+
+networks:
+  agrotech:
+    driver: bridge
+
+volumes:
+  agrotech_postgres_data:
+    driver: local
