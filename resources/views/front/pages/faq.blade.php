@@ -68,7 +68,10 @@
                     <div class="rounded-2xl border bg-white p-6 shadow-sm">
                         <h3 class="text-lg font-bold">Should I call before visiting?</h3>
                         <p class="mt-3 leading-7 text-slate-600">
-                            Yes. We recommend calling or sending a message before visiting {{ config('site.address') }}.
+                            Yes. We recommend calling or sending a message before visiting
+                            @include('front.components.contact.address-link', [
+                                'class' => 'font-bold text-green-700 hover:text-green-800',
+                            ]).
                             This helps confirm that the equipment you want to see is still available and ready to
                             review.
                         </p>
@@ -112,7 +115,9 @@
 
                 <div class="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-6 text-slate-200">
                     <div class="font-bold text-white">Location</div>
-                    <div class="mt-1">{{ config('site.address') }}</div>
+                    @include('front.components.contact.address-link', [
+                        'class' => 'mt-1 inline-block hover:text-green-700',
+                    ])
                 </div>
             </aside>
         </div>

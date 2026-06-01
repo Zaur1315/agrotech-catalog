@@ -106,7 +106,10 @@
                     </h2>
 
                     <p class="mt-4 leading-7 text-slate-600">
-                        We are located at {{ config('site.address') }}. Before visiting, we recommend calling or sending
+                        We are located at
+                        @include('front.components.contact.address-link', [
+                            'class' => 'font-bold text-green-700 hover:text-green-800',
+                        ]). Before visiting, we recommend calling or sending
                         a
                         message to confirm equipment availability and the details of the unit you are interested in.
                     </p>
@@ -153,7 +156,9 @@
                     <div class="rounded-2xl bg-white/10 p-4">
                         <div class="font-bold text-white">Address</div>
                         <div class="mt-1 text-slate-200">
-                            {{ config('site.address') }}
+                            @include('front.components.contact.address-link', [
+                                'class' => 'hover:text-green-800',
+                            ])
                         </div>
                     </div>
                 </div>

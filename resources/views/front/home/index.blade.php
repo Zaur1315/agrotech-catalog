@@ -11,17 +11,17 @@
             <div>
                 <div
                     class="mb-5 inline-flex rounded-full border border-green-400/30 bg-green-500/10 px-4 py-2 text-sm font-semibold text-green-200">
-                    Equipment dealership in {{ config('site.city') }}, {{ config('site.state') }}
+                    Used equipment dealer in {{ config('site.city') }}, {{ config('site.state') }}
                 </div>
 
                 <h1 class="max-w-3xl text-4xl font-extrabold tracking-tight md:text-6xl">
-                    Work-ready equipment with fast quote requests.
+                    Used tractors, backhoes and loaders ready for real work.
                 </h1>
 
                 <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                    Browse tractors, implements, attachments, mowers, trailers and other equipment from
-                    {{ config('site.name') }}. Ask about availability, condition, delivery options and pricing before
-                    you visit.
+                    Browse available equipment from {{ config('site.name') }} in {{ config('site.city') }}
+                    , {{ config('site.state') }}.
+                    Call before visiting, request a quote online, or ask about condition, pricing and delivery options.
                 </p>
 
                 <div class="mt-8 flex flex-wrap gap-4">
@@ -41,21 +41,38 @@
                     </a>
                 </div>
 
-                <div class="mt-10 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="mt-6 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
                     <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                        <div class="text-3xl font-black">{{ $categories->count() }}</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-300">Equipment categories</div>
+                        <div class="text-3xl font-black">{{ $availableProductsCount }}</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Available equipment listings</div>
                     </div>
 
                     <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                        <div class="text-3xl font-black">{{ $availableProductsCount }}</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-300">Available listings</div>
+                        <div class="text-3xl font-black">1–2</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Steps to call or request a quote</div>
                     </div>
 
                     <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
                         <div class="text-3xl font-black">WV</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-300">Located in Mt Nebo</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Located in Mt Nebo, West Virginia</div>
                     </div>
+                </div>
+
+                <div class="mt-6 flex flex-col gap-3 text-sm text-slate-300 sm:flex-row sm:flex-wrap sm:items-center">
+                    <a href="{{ config('site.maps_url') }}"
+                       target="_blank"
+                       rel="noopener"
+                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-green-400 hover:text-white">
+                        <span>📍</span>
+                        <span>{{ config('site.address') }}</span>
+                    </a>
+
+                    <a href="mailto:{{ config('site.email') }}"
+                       target="_blank"
+                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-green-400 hover:text-white">
+                        <span>✉</span>
+                        <span>{{ config('site.email') }}</span>
+                    </a>
                 </div>
             </div>
 
@@ -364,8 +381,12 @@
                 <h2 class="mt-3 text-3xl font-black">{{ config('site.name') }}</h2>
 
                 <p class="mt-4 max-w-2xl leading-7 text-slate-600">
-                    We are located at {{ config('site.address') }}. Before visiting, call or send a message to confirm
-                    the equipment you are interested in is currently available.
+                    We are located at
+                    <a href="{{ config('site.maps_url') }}" target="_blank" rel="noopener"
+                       class="font-bold text-green-700 hover:text-green-800">
+                        {{ config('site.address') }}
+                    </a>.
+                    Before visiting, call or send a message to confirm
                 </p>
 
                 <div class="mt-6 flex flex-wrap gap-3">
@@ -399,7 +420,12 @@
 
                     <div>
                         <div class="font-bold text-slate-950">Address</div>
-                        <div class="mt-1">{{ config('site.address') }}</div>
+                        <a href="{{ config('site.maps_url') }}"
+                           target="_blank"
+                           rel="noopener"
+                           class="mt-1 inline-block hover:text-green-700">
+                            {{ config('site.address') }}
+                        </a>
                     </div>
                 </div>
             </div>

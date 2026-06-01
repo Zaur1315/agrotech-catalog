@@ -165,9 +165,9 @@
 
                     <div class="rounded-2xl bg-white/10 p-4">
                         <div class="font-bold text-white">Address</div>
-                        <div class="mt-1 text-slate-200">
-                            {{ config('site.address') }}
-                        </div>
+                        @include('front.components.contact.address-link', [
+                            'class' => 'mt-1 inline-block text-slate-200 hover:text-white',
+                        ])
                     </div>
                 </div>
 

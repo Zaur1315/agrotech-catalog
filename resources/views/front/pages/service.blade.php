@@ -72,7 +72,10 @@
                         Tell us which machine you are interested in and what kind of work you need it for. We can help
                         you review the equipment,
                         discuss availability, and prepare the right questions before you visit our location
-                        at {{ config('site.address') }}.
+                        at
+                        @include('front.components.contact.address-link', [
+                            'class' => 'font-bold text-green-700 hover:text-green-800',
+                        ]).
                     </p>
 
                     <div class="mt-6 flex flex-wrap gap-3">
@@ -116,7 +119,9 @@
 
                 <div class="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-6 text-slate-200">
                     <div class="font-bold text-white">Location</div>
-                    <div class="mt-1">{{ config('site.address') }}</div>
+                    @include('front.components.contact.address-link', [
+                        'class' => 'mt-1 inline-block hover:text-green-700',
+                    ])
                 </div>
             </aside>
         </div>

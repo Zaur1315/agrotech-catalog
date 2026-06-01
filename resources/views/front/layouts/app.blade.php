@@ -171,7 +171,12 @@
                     </a>
                 </p>
 
-                <p>Location: {{ config('site.address') }}</p>
+                <p>
+                    Location:
+                    @include('front.components.contact.address-link', [
+                        'class' => 'hover:text-green-500',
+                    ])
+                </p>
             </div>
         </div>
 
@@ -215,11 +220,13 @@
                 </a>
 
                 <a
-                    href="{{ route('catalog.index') }}"
+                    href="{{ config('site.maps_url') }}"
+                    target="_blank"
+                    rel="noopener"
                     class="flex flex-col items-center justify-center gap-1 rounded-2xl bg-slate-100 px-2 py-3 text-xs font-bold text-slate-900 transition hover:bg-slate-200"
                 >
-                    <span class="text-base">▦</span>
-                    <span>Inventory</span>
+                    <span class="text-base">📍</span>
+                    <span>Get directions</span>
                 </a>
 
                 <a

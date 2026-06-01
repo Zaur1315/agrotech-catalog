@@ -38,7 +38,9 @@ final class HomeController extends Controller
             ->with(['category', 'brand'])
             ->where('is_active', true)
             ->where('status', Product::STATUS_AVAILABLE)
-            ->latest()
+            ->whereNotIn('id', $featuredProducts->pluck('id'))
+            ->orderBy('sort_order')
+            ->orderBy('id')
             ->limit(6)
             ->get();
 

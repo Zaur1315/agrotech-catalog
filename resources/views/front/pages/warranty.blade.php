@@ -131,7 +131,9 @@
                 <div class="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-6 text-slate-200">
                     <div class="font-bold text-white">Dealer</div>
                     <div class="mt-1">{{ config('site.name') }}</div>
-                    <div class="mt-1">{{ config('site.address') }}</div>
+                    @include('front.components.contact.address-link', [
+                        'class' => 'mt-1 inline-block hover:text-green-700',
+                    ])
                 </div>
             </aside>
         </div>
