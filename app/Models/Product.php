@@ -120,14 +120,18 @@ final class Product extends Model
 
     public function getCardImageUrlAttribute(): string
     {
-        $primaryImage = $this->images
-            ->sortBy('sort_order')
-            ->first();
+        $primaryImage = $this->relationLoaded('images')
+            ? $this->images->sortBy('sort_order')->first()
+            : $this->images()->orderBy('sort_order')->orderBy('id')->first();
 
         if ($primaryImage instanceof ProductImage) {
             return $primaryImage->medium_url;
         }
 
-        return $this->main_image_url;
+        if ($this->main_image !== null && $this->main_image !== '') {
+            return asset('storage/' . ltrim($this->main_image, '/'));
+        }
+
+        return asset('images/placeholders/product-placeholder.jpg');
     }
 }
