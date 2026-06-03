@@ -12,6 +12,7 @@ use App\Services\Lead\ProductLeadService;
 use App\Services\Meta\MetaConversionsApiService;
 use App\Services\Meta\MetaPixelEventFactory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 final class ProductController extends Controller
@@ -53,7 +54,7 @@ final class ProductController extends Controller
         LeadContextFactory $leadContextFactory,
         MetaPixelEventFactory $metaPixelEventFactory,
         MetaConversionsApiService $metaConversionsApiService,
-    ): RedirectResponse {
+    ): RedirectResponse|JsonResponse {
         abort_if(
             ! $product->is_active || $product->status !== Product::STATUS_AVAILABLE,
             404,
@@ -69,15 +70,24 @@ final class ProductController extends Controller
 
         $metaConversionsApiService->sendLead($lead, $metaEvent['event_id']);
 
+        $browserMetaEvent = array_merge($metaEvent, [
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'customer_name' => $lead->name,
+            'fbp' => $lead->fbp,
+            'fbc' => $lead->fbc,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Thank you! Your quote request has been sent successfully.',
+                'meta_event' => $browserMetaEvent,
+            ]);
+        }
+
         return redirect()
             ->route('products.show', $product)
             ->with('success', 'Thank you! Your quote request has been sent successfully.')
-            ->with('meta_event', array_merge($metaEvent, [
-                'email' => $lead->email,
-                'phone' => $lead->phone,
-                'customer_name' => $lead->name,
-                'fbp' => $lead->fbp,
-                'fbc' => $lead->fbc,
-            ]));
+            ->with('meta_event', $browserMetaEvent);
     }
 }

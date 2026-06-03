@@ -24,7 +24,13 @@
                         @include('front.components.form.errors')
                     </div>
 
-                    <form action="{{ route('contact.store') }}" method="POST" class="space-y-5">
+                    <form
+                        action="{{ route('contact.store') }}"
+                        method="POST"
+                        class="space-y-5"
+                        data-ajax-form
+                        data-success-message="Thank you! Your message has been sent successfully."
+                    >
                         @csrf
 
                         <input

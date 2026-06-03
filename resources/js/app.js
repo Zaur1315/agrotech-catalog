@@ -1,4 +1,9 @@
 import Alpine from 'alpinejs';
+import {initAjaxForms} from "./ajax-forms.js";
+
+document.addEventListener('DOMContentLoaded', () => {
+    initAjaxForms();
+});
 
 window.Alpine = Alpine;
 

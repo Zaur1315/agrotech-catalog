@@ -13,6 +13,7 @@ use App\Services\Lead\ProductLeadService;
 use App\Services\Meta\MetaConversionsApiService;
 use App\Services\Meta\MetaPixelEventFactory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 final class QuoteCartController extends Controller
@@ -27,7 +28,7 @@ final class QuoteCartController extends Controller
     public function add(Product $product, QuoteCartService $cart): RedirectResponse
     {
         abort_if(
-            ! $product->is_active || $product->status !== Product::STATUS_AVAILABLE,
+            !$product->is_active || $product->status !== Product::STATUS_AVAILABLE,
             404,
         );
 
@@ -53,10 +54,16 @@ final class QuoteCartController extends Controller
         LeadContextFactory $leadContextFactory,
         MetaPixelEventFactory $metaPixelEventFactory,
         MetaConversionsApiService $metaConversionsApiService,
-    ): RedirectResponse {
+    ): RedirectResponse|JsonResponse {
         $items = $cart->items();
 
         if ($items->isEmpty()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Your quote list is empty.',
+                ], 422);
+            }
+
             return redirect()
                 ->route('quote.index')
                 ->with('error', 'Your quote list is empty.');
@@ -74,15 +81,25 @@ final class QuoteCartController extends Controller
 
         $cart->clear();
 
+        $browserMetaEvent = array_merge($metaEvent, [
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'customer_name' => $lead->name,
+            'fbp' => $lead->fbp,
+            'fbc' => $lead->fbc,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Thank you! Your quote request has been sent successfully.',
+                'meta_event' => $browserMetaEvent,
+                'redirect_url' => route('quote.index'),
+            ]);
+        }
+
         return redirect()
             ->route('quote.index')
             ->with('success', 'Thank you! Your quote request has been sent successfully.')
-            ->with('meta_event', array_merge($metaEvent, [
-                'email' => $lead->email,
-                'phone' => $lead->phone,
-                'customer_name' => $lead->name,
-                'fbp' => $lead->fbp,
-                'fbc' => $lead->fbc,
-            ]));
+            ->with('meta_event', $browserMetaEvent);
     }
 }

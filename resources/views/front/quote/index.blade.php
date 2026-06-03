@@ -99,7 +99,13 @@
                     @include('front.components.form.errors')
                 </div>
 
-                <form action="{{ route('quote.submit') }}" method="POST" class="space-y-5">
+                <form
+                    action="{{ route('quote.submit') }}"
+                    method="POST"
+                    class="space-y-5"
+                    data-ajax-form
+                    data-success-message="Thank you! Your quote request has been sent successfully."
+                >
                     @csrf
 
                     <input

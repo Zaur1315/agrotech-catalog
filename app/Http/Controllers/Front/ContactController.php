@@ -11,6 +11,7 @@ use App\Services\Lead\LeadContextFactory;
 use App\Services\Meta\MetaConversionsApiService;
 use App\Services\Meta\MetaPixelEventFactory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 final class ContactController extends Controller
@@ -26,7 +27,7 @@ final class ContactController extends Controller
         LeadContextFactory $leadContextFactory,
         MetaPixelEventFactory $metaPixelEventFactory,
         MetaConversionsApiService $metaConversionsApiService,
-    ): RedirectResponse {
+    ): RedirectResponse|JsonResponse {
         $metaEvent = $metaPixelEventFactory->makeLead();
 
         $lead = $leadService->create(
@@ -36,15 +37,24 @@ final class ContactController extends Controller
 
         $metaConversionsApiService->sendLead($lead, $metaEvent['event_id']);
 
+        $browserMetaEvent = array_merge($metaEvent, [
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'customer_name' => $lead->name,
+            'fbp' => $lead->fbp,
+            'fbc' => $lead->fbc,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Thank you! Your message has been sent successfully.',
+                'meta_event' => $browserMetaEvent,
+            ]);
+        }
+
         return redirect()
             ->route('contact.index')
             ->with('success', 'Thank you! Your message has been sent successfully.')
-            ->with('meta_event', array_merge($metaEvent, [
-                'email' => $lead->email,
-                'phone' => $lead->phone,
-                'customer_name' => $lead->name,
-                'fbp' => $lead->fbp,
-                'fbc' => $lead->fbc,
-            ]));
+            ->with('meta_event', $browserMetaEvent);
     }
 }

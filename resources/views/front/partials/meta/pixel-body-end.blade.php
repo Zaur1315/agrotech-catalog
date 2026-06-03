@@ -1,32 +1,31 @@
-@if (config('services.meta.pixel_enabled') && config('services.meta.pixel_id'))
+@if (config('services.meta.pixel_enabled') && config('services.meta.pixel_id') && session()->has('meta_event'))
     @php
         $metaEvent = session('meta_event');
+        $metaEventName = is_array($metaEvent) ? ($metaEvent['name'] ?? null) : null;
+        $metaEventId = is_array($metaEvent) ? ($metaEvent['event_id'] ?? null) : null;
+        $metaEventPayload = is_array($metaEvent) ? ($metaEvent['payload'] ?? []) : [];
     @endphp
 
-    @if (is_array($metaEvent) && ($metaEvent['name'] ?? null) === 'Lead')
+    @if ($metaEventName === 'Lead')
         <script>
             if (typeof fbq === 'function') {
-                fbq('track', 'Lead', {}, {
-                    eventID: @json($metaEvent['event_id'] ?? null)
+                console.info('[Meta Pixel] Sending Lead event', {
+                    eventID: @json($metaEventId),
+                    payload: @json($metaEventPayload),
+                    url: window.location.href
+                });
+
+                fbq('track', 'Lead', @json($metaEventPayload), {
+                    eventID: @json($metaEventId)
+                });
+            } else {
+                console.warn('[Meta Pixel] Lead event was not sent because fbq is not available', {
+                    eventID: @json($metaEventId),
+                    url: window.location.href
                 });
             }
         </script>
     @endif
-
-    <script>
-        if (typeof fbq === 'function') {
-            const leadName = @json($metaEvent['customer_name'] ?? '');
-            const nameParts = typeof leadName === 'string' ? leadName.trim().split(/\s+/) : [];
-
-            fbq('track', 'Lead', {}, {
-                eventID: @json($metaEvent['event_id'] ?? null),
-                em: @json($metaEvent['email'] ?? null),
-                ph: @json(isset($metaEvent['phone']) ? preg_replace('/\D+/', '', $metaEvent['phone']) : null),
-                fn: nameParts[0] ? nameParts[0].toLowerCase() : null,
-                ln: nameParts.length > 1 ? nameParts[nameParts.length - 1].toLowerCase() : null,
-                fbp: @json($metaEvent['fbp'] ?? null),
-                fbc: @json($metaEvent['fbc'] ?? null)
-            });
-        }
-    </script>
 @endif
+
+@stack('meta_pixel_events')
