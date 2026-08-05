@@ -3,7 +3,7 @@
 @section('content')
     @include('front.components.page-banner', [
         'title' => 'About ' . config('site.name'),
-        'description' => 'A practical equipment dealership serving customers from Mt Nebo, West Virginia.',
+        'description' => 'A practical farm and construction equipment dealership serving Gallatin and Middle Tennessee.',
         'badge' => 'About',
     ])
 

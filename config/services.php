@@ -37,7 +37,7 @@ return [
 
     'leads' => [
         'notification_email' => env('LEAD_NOTIFICATION_EMAIL'),
-        'from_name' => env('LEAD_NOTIFICATION_FROM_NAME', 'Mt. Nebo Tractor'),
+        'from_name' => env('LEAD_NOTIFICATION_FROM_NAME', "Moore's Farm Equipment"),
     ],
 
     'meta' => [

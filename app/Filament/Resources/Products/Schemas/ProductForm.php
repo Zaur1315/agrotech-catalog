@@ -215,7 +215,7 @@ final class ProductForm
 
                         TextInput::make('location')
                             ->maxLength(255)
-                            ->placeholder('Mt Nebo, WV'),
+                            ->placeholder('Gallatin, TN'),
 
                         TextInput::make('sort_order')
                             ->numeric()

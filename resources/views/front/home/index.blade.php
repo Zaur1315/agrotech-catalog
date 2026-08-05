@@ -1,43 +1,42 @@
-@extends('front.layouts.app', ['title' => 'Equipment Inventory & Tractor Sales'])
+@extends('front.layouts.app', ['title' => 'Farm & Construction Equipment'])
 
 @section('content')
-    <section class="relative overflow-hidden bg-slate-950 text-white">
-        <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-slate-950 to-slate-950"></div>
-        <div class="absolute -right-24 top-20 h-72 w-72 rounded-full bg-green-500/20 blur-3xl"></div>
-        <div class="absolute -left-24 bottom-10 h-72 w-72 rounded-full bg-green-800/20 blur-3xl"></div>
+    <section class="relative overflow-hidden bg-brand-900 text-white">
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-800 via-brand-900 to-slate-950"></div>
+        <div class="absolute -right-24 top-20 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl"></div>
+        <div class="absolute -left-24 bottom-10 h-72 w-72 rounded-full bg-amber-700/20 blur-3xl"></div>
 
         <div
             class="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
             <div>
                 <div
-                    class="mb-5 inline-flex rounded-full border border-green-400/30 bg-green-500/10 px-4 py-2 text-sm font-semibold text-green-200">
-                    Used equipment dealer in {{ config('site.city') }}, {{ config('site.state') }}
+                    class="mb-5 inline-flex rounded-full border border-brand-500/40 bg-brand-500/10 px-4 py-2 text-sm font-semibold text-amber-200">
+                    Middle Tennessee equipment dealer · Since 1997
                 </div>
 
                 <h1 class="max-w-3xl text-4xl font-extrabold tracking-tight md:text-6xl">
-                    Used tractors, backhoes and loaders ready for real work.
+                    Equipment that earns its keep.
                 </h1>
 
                 <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                    Browse available equipment from {{ config('site.name') }} in {{ config('site.city') }}
-                    , {{ config('site.state') }}.
-                    Call before visiting, request a quote online, or ask about condition, pricing and delivery options.
+                    From tractors and skid steers to hay tools and loaders, Moore’s Farm Equipment helps farmers,
+                    landowners and contractors find capable machines without the runaround.
                 </p>
 
                 <div class="mt-8 flex flex-wrap gap-4">
                     <a href="{{ route('catalog.index') }}"
-                       class="rounded-2xl bg-green-600 px-6 py-3.5 font-bold text-white shadow-lg shadow-green-900/30 transition hover:bg-green-700">
-                        View inventory
+                       class="rounded-2xl bg-brand-500 px-6 py-3.5 font-bold text-brand-900 shadow-lg shadow-black/20 transition hover:bg-amber-300">
+                        Shop equipment
                     </a>
 
                     <a href="tel:{{ config('site.phone_tel') }}"
-                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
+                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:border-brand-500 hover:bg-white/10">
                         Call {{ config('site.phone') }}
                     </a>
 
                     <a href="{{ route('quote.index') }}"
-                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
-                        Request quote
+                       class="rounded-2xl border border-white/20 px-6 py-3.5 font-bold text-white transition hover:border-brand-500 hover:bg-white/10">
+                        Build a quote
                     </a>
                 </div>
 
@@ -53,8 +52,8 @@
                     </div>
 
                     <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                        <div class="text-3xl font-black">WV</div>
-                        <div class="mt-1 text-sm leading-5 text-slate-300">Located in Mt Nebo, West Virginia</div>
+                        <div class="text-3xl font-black">TN</div>
+                        <div class="mt-1 text-sm leading-5 text-slate-300">Serving Gallatin & Middle Tennessee</div>
                     </div>
                 </div>
 
@@ -62,14 +61,14 @@
                     <a href="{{ config('site.maps_url') }}"
                        target="_blank"
                        rel="noopener"
-                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-green-400 hover:text-white">
+                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-brand-500 hover:text-white">
                         <span>📍</span>
                         <span>{{ config('site.address') }}</span>
                     </a>
 
                     <a href="mailto:{{ config('site.email') }}"
                        target="_blank"
-                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-green-400 hover:text-white">
+                       class="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold transition hover:border-brand-500 hover:text-white">
                         <span>✉</span>
                         <span>{{ config('site.email') }}</span>
                     </a>

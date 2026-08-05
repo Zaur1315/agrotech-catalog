@@ -35,12 +35,12 @@ final class NewLeadNotificationMail extends Mailable
     private function makeSubject(): string
     {
         return match ($this->lead->type) {
-            Lead::TYPE_QUOTE => 'New Quote Request — Mt. Nebo Tractor',
-            Lead::TYPE_PRODUCT_QUESTION => 'New Product Question — Mt. Nebo Tractor',
-            Lead::TYPE_SERVICE => 'New Service Request — Mt. Nebo Tractor',
-            Lead::TYPE_DELIVERY => 'New Delivery Request — Mt. Nebo Tractor',
-            Lead::TYPE_FINANCING => 'New Financing Request — Mt. Nebo Tractor',
-            default => 'New Website Lead — Mt. Nebo Tractor',
+            Lead::TYPE_QUOTE => "New Quote Request — Moore's Farm Equipment",
+            Lead::TYPE_PRODUCT_QUESTION => "New Product Question — Moore's Farm Equipment",
+            Lead::TYPE_SERVICE => "New Service Request — Moore's Farm Equipment",
+            Lead::TYPE_DELIVERY => "New Delivery Request — Moore's Farm Equipment",
+            Lead::TYPE_FINANCING => "New Financing Request — Moore's Farm Equipment",
+            default => "New Website Lead — Moore's Farm Equipment",
         };
     }
 }

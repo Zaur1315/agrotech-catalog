@@ -8,8 +8,29 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-brand-50: #f7f5ec;
+    --color-brand-100: #e9e5d1;
+    --color-brand-500: #c59635;
+    --color-brand-600: #a87920;
+    --color-brand-700: #8c641a;
+    --color-brand-800: #6f5019;
+    --color-brand-900: #173f32;
 }
 
 [x-cloak] {
     display: none !important;
 }
+
+body { background: #f7f5ec; }
+::selection { background: #c59635; color: #173f32; }
+.brand-display { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.04em; }
+.grain { background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px); background-size: 12px 12px; }
+
+/* Dealership palette override for shared legacy utility classes. */
+.bg-green-50 { background-color: #f7f5ec !important; }
+.bg-green-500, .bg-green-600, .bg-green-700 { background-color: #173f32 !important; }
+.bg-green-800, .bg-green-900 { background-color: #0f2e25 !important; }
+.text-green-200, .text-green-300, .text-green-400, .text-green-500, .text-green-600, .text-green-700, .text-green-800 { color: #8c641a !important; }
+.border-green-200, .border-green-400, .border-green-500 { border-color: #c59635 !important; }
+.hover\:bg-green-700:hover, .hover\:bg-green-800:hover { background-color: #c59635 !important; }
+.hover\:text-green-700:hover, .hover\:text-green-800:hover { color: #6f5019 !important; }

@@ -14,5 +14,5 @@ storage/app/public/*.jpeg
 storage/app/public/*.png
 storage/app/public/*.webp
 bootstrap/cache/*.php
-database/database.sqlite
+database/12database.sqlite
 tests
