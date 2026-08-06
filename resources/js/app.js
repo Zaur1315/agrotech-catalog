@@ -7,102 +7,135 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.Alpine = Alpine;
 
-Alpine.data('productGallery', ({images, visibleCount = 8}) => ({
-    images,
-    visibleCount,
-    isExpanded: false,
-    isOpen: false,
-    currentIndex: 0,
+Alpine.data('heroSlider', ({interval = 6500, autoplay = true, count = 0}) => ({
+    current: 0,
+    timer: null,
+    paused: false,
+    interval,
+    autoplay,
+    count,
 
-    get visibleImages() {
-        if (this.isExpanded) {
-            return this.images;
+    init() {
+        this.handleVisibility = () => document.hidden ? this.pause() : this.resume();
+        document.addEventListener('visibilitychange', this.handleVisibility);
+
+        if (this.autoplay && this.count > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            this.resume();
         }
 
-        return this.images.slice(0, this.visibleCount);
-    },
-
-    get currentImage() {
-        return this.images[this.currentIndex] ?? {
-            full: '',
-            thumb: '',
-            alt: '',
-        };
-    },
-
-    toggleExpanded() {
-        this.isExpanded = !this.isExpanded;
-    },
-
-    open(index) {
-        this.currentIndex = index;
-        this.isOpen = true;
-        document.body.classList.add('overflow-hidden');
-
-        this.$nextTick(() => {
-            this.scrollActiveThumbnailIntoView();
+        this.$el.addEventListener('alpine:destroy', () => {
+            this.stop();
+            document.removeEventListener('visibilitychange', this.handleVisibility);
         });
     },
 
-    close() {
-        this.isOpen = false;
-        document.body.classList.remove('overflow-hidden');
+    start() {
+        this.stop();
+        if (!this.paused && !document.hidden && this.count > 1) {
+            this.timer = window.setInterval(() => this.next(), this.interval);
+        }
     },
 
-    previous() {
-        if (!this.isOpen || this.images.length === 0) {
-            return;
+    stop() {
+        if (this.timer) {
+            window.clearInterval(this.timer);
+            this.timer = null;
         }
+    },
 
-        this.currentIndex = this.currentIndex === 0
-            ? this.images.length - 1
-            : this.currentIndex - 1;
+    pause() {
+        this.paused = true;
+        this.stop();
+    },
 
-        this.$nextTick(() => {
-            this.scrollActiveThumbnailIntoView();
-        });
+    resume() {
+        this.paused = false;
+        if (this.autoplay && this.count > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            this.start();
+        }
+    },
+
+    goTo(index) {
+        this.current = index;
+        if (!this.paused) this.start();
     },
 
     next() {
-        if (!this.isOpen || this.images.length === 0) {
-            return;
-        }
-
-        this.currentIndex = this.currentIndex === this.images.length - 1
-            ? 0
-            : this.currentIndex + 1;
-
-        this.$nextTick(() => {
-            this.scrollActiveThumbnailIntoView();
-        });
+        if (this.count < 2) return;
+        this.current = (this.current + 1) % this.count;
     },
 
-    setCurrentIndex(index) {
+    previous() {
+        if (this.count < 2) return;
+        this.current = (this.current - 1 + this.count) % this.count;
+    },
+}));
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const delay = entry.target.dataset.revealDelay ?? 0;
+        entry.target.style.setProperty('--reveal-delay', `${delay}ms`);
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+    });
+}, {threshold: 0.12});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('[data-reveal]').forEach((element) => element.classList.add('is-visible'));
+        return;
+    }
+
+    document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
+});
+
+Alpine.data('productGallery', ({images = []}) => ({
+    images,
+    currentIndex: 0,
+    isLightbox: false,
+    lastFocused: null,
+
+    get currentImage() {
+        return this.images[this.currentIndex] ?? this.images[0] ?? {full: '', thumb: '', alt: ''};
+    },
+
+    open(index = this.currentIndex) {
         this.currentIndex = index;
-
-        this.$nextTick(() => {
-            this.scrollActiveThumbnailIntoView();
-        });
+        this.lastFocused = document.activeElement;
+        this.isLightbox = true;
+        document.body.classList.add('overflow-hidden');
+        this.$nextTick(() => this.$refs.closeButton?.focus());
     },
 
-    scrollActiveThumbnailIntoView() {
-        const thumbnails = this.$refs.lightboxThumbnails;
+    close() {
+        this.isLightbox = false;
+        document.body.classList.remove('overflow-hidden');
+        this.$nextTick(() => this.lastFocused?.focus?.());
+    },
 
-        if (!thumbnails) {
-            return;
-        }
+    previous() {
+        if (this.images.length < 2) return;
+        this.currentIndex = this.currentIndex === 0 ? this.images.length - 1 : this.currentIndex - 1;
+    },
 
-        const activeThumbnail = thumbnails.querySelector(`[data-gallery-index="${this.currentIndex}"]`);
+    next() {
+        if (this.images.length < 2) return;
+        this.currentIndex = this.currentIndex === this.images.length - 1 ? 0 : this.currentIndex + 1;
+    },
 
-        if (!activeThumbnail) {
-            return;
-        }
+    select(index) {
+        this.currentIndex = index;
+    },
 
-        activeThumbnail.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'center',
-        });
+    trapFocus(event) {
+        const focusable = [...event.currentTarget.querySelectorAll('button:not([style*="display: none"])')];
+        if (focusable.length === 0) return;
+        const current = focusable.indexOf(document.activeElement);
+        const next = event.shiftKey
+            ? (current <= 0 ? focusable.length - 1 : current - 1)
+            : (current + 1) % focusable.length;
+        focusable[next].focus();
     },
 }));
 

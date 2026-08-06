@@ -28,7 +28,7 @@
 @endphp
 
 <article
-    class="group overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
+    class="group home-product-card overflow-hidden border bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
     <a href="{{ route('products.show', $product) }}" class="block">
         <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
             <img

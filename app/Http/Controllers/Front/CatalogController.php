@@ -28,16 +28,27 @@ final class CatalogController extends Controller
     private function renderCatalog(Request $request, ?Category $currentCategory = null): View
     {
         $query = Product::query()
-            ->with(['category', 'brand'])
+            ->with(['category', 'brand', 'images'])
             ->where('is_active', true)
             ->where('status', '!=', Product::STATUS_HIDDEN);
 
         if ($currentCategory !== null) {
             $query->where('category_id', $currentCategory->id);
+        } elseif ($request->filled('category')) {
+            $query->where('category_id', (int) $request->integer('category'));
         }
 
         if ($request->filled('brand')) {
-            $query->where('brand_id', (int)$request->integer('brand'));
+            $query->where('brand_id', (int) $request->integer('brand'));
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->string('search')->trim()->toString();
+
+            $query->where(function ($query) use ($search): void {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('short_description', 'like', "%{$search}%");
+            });
         }
 
         if ($request->filled('condition')) {
@@ -78,6 +89,19 @@ final class CatalogController extends Controller
 
         $sort = $request->string('sort')->toString();
 
+        $allowedSorts = [
+            'price_asc',
+            'price_desc',
+            'year_desc',
+            'year_asc',
+            'hours_asc',
+            'horsepower_desc',
+        ];
+
+        if (! in_array($sort, $allowedSorts, true)) {
+            $sort = 'newest';
+        }
+
         match ($sort) {
             'price_asc' => $query->orderByRaw('price IS NULL')->orderBy('price'),
             'price_desc' => $query->orderByDesc('price'),
@@ -85,7 +109,7 @@ final class CatalogController extends Controller
             'year_asc' => $query->orderBy('year'),
             'hours_asc' => $query->orderByRaw('hours_used IS NULL')->orderBy('hours_used'),
             'horsepower_desc' => $query->orderByDesc('horsepower'),
-            default => $query->latest(),
+            'newest' => $query->latest(),
         };
 
         $products = $query
@@ -109,6 +133,7 @@ final class CatalogController extends Controller
             'brands' => $brands,
             'currentCategory' => $currentCategory,
             'filters' => $request->query(),
+            'sort' => $sort,
         ]);
     }
 }

@@ -29,11 +29,14 @@ final class ProductController extends Controller
         ]);
 
         $relatedProducts = Product::query()
-            ->with(['category', 'brand'])
+            ->with(['category', 'brand', 'images'])
             ->where('is_active', true)
             ->where('status', Product::STATUS_AVAILABLE)
             ->whereKeyNot($product->id)
-            ->latest()
+            ->when($product->category_id, function ($query) use ($product): void {
+                $query->orderByRaw('CASE WHEN category_id = ? THEN 0 ELSE 1 END', [$product->category_id]);
+            })
+            ->latest('id')
             ->limit(4)
             ->get();
 
