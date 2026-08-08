@@ -97,7 +97,7 @@
                 <a href="{{ route($item['route']) }}">{{ $item['label'] }}</a>
             @endforeach
             @if(Route::has('pages.privacy-policy')) <a href="{{ route('pages.privacy-policy') }}">Privacy Policy</a> @endif
-            @if(Route::has('pages.terms')) <a href="{{ route('pages.terms') }}">Terms</a> @endif
+            @if(Route::has('pages.terms')) <a href="{{ route('pages.terms') }}">Terms &amp; Conditions</a> @endif
         </section>
         <section>
             <p class="site-footer__eyebrow">Contact</p>

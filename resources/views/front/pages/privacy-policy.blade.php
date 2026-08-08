@@ -1,296 +1,54 @@
-@extends('front.layouts.app', ['title' => 'Privacy Policy'])
+@php
+    $legal = config('legal.privacy');
+    $toc = [
+        ['number' => '01', 'id' => 'introduction', 'label' => 'Introduction'],
+        ['number' => '02', 'id' => 'information-we-collect', 'label' => 'Information We Collect'],
+        ['number' => '03', 'id' => 'information-you-provide', 'label' => 'Information You Provide'],
+        ['number' => '04', 'id' => 'automatic-information', 'label' => 'Automatically Collected Information'],
+        ['number' => '05', 'id' => 'how-we-use-information', 'label' => 'How We Use Information'],
+        ['number' => '06', 'id' => 'cookies-and-similar-technologies', 'label' => 'Cookies and Similar Technologies'],
+        ['number' => '07', 'id' => 'how-we-share-information', 'label' => 'How We Share Information'],
+        ['number' => '08', 'id' => 'third-party-links-and-services', 'label' => 'Third-Party Links and Services'],
+        ['number' => '09', 'id' => 'data-security', 'label' => 'Data Security'],
+        ['number' => '10', 'id' => 'data-retention', 'label' => 'Data Retention'],
+        ['number' => '11', 'id' => 'your-choices', 'label' => 'Your Choices'],
+        ['number' => '12', 'id' => 'childrens-privacy', 'label' => "Children's Privacy"],
+        ['number' => '13', 'id' => 'changes-to-this-policy', 'label' => 'Changes to This Policy'],
+        ['number' => '14', 'id' => 'contact-us', 'label' => 'Contact Us'],
+    ];
+@endphp
+
+@extends('front.layouts.app', ['title' => $legal['title']])
+
+@push('seo')
+    <meta name="description" content="Read the Moore's Farm Equipment Privacy Policy to learn how information submitted through our website is handled.">
+    <link rel="canonical" href="{{ route('pages.privacy-policy') }}">
+@endpush
 
 @section('content')
-    @include('front.components.page-banner', [
-        'title' => 'Privacy Policy',
-        'description' => 'Learn how we collect, use and protect information submitted through this website.',
-        'badge' => 'Privacy',
-    ])
+    @include('front.components.legal.hero', ['content' => $legal, 'crumb' => 'Privacy Policy'])
 
-    <section class="mx-auto max-w-7xl px-4 py-12">
-        <div class="grid gap-8 lg:grid-cols-[1fr_380px]">
-            <div class="space-y-6">
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Overview</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        This Privacy Policy explains how {{ config('site.name') }} collects, uses and protects
-                        information
-                        when you visit this website, browse inventory, submit a quote request, contact us, or interact
-                        with
-                        our online forms.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        By using this website, you agree to the collection and use of information as described in this
-                        policy.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Information you provide</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        When you submit a contact form, quote request, product inquiry, delivery question, or
-                        service-related
-                        request, we may collect information such as:
-                    </p>
-
-                    <ul class="mt-4 list-disc space-y-2 pl-6 leading-7 text-slate-600">
-                        <li>Your name</li>
-                        <li>Phone number</li>
-                        <li>Email address</li>
-                        <li>Preferred contact method</li>
-                        <li>Message or request details</li>
-                        <li>Equipment or products included in your quote request</li>
-                    </ul>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Information collected automatically</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        When you use this website, certain technical information may be collected automatically for
-                        security,
-                        analytics, lead tracking and website improvement purposes.
-                    </p>
-
-                    <ul class="mt-4 list-disc space-y-2 pl-6 leading-7 text-slate-600">
-                        <li>IP address</li>
-                        <li>Browser and device information</li>
-                        <li>User agent</li>
-                        <li>Pages visited</li>
-                        <li>Source page of a request</li>
-                        <li>UTM campaign parameters</li>
-                        <li>Cookie-based advertising identifiers such as Meta Pixel browser identifiers, where
-                            applicable
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">How we use information</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        {{ config('site.name') }} may use collected information to:
-                    </p>
-
-                    <ul class="mt-4 list-disc space-y-2 pl-6 leading-7 text-slate-600">
-                        <li>Respond to contact messages and quote requests</li>
-                        <li>Follow up about equipment availability, pricing, delivery, service or financing questions
-                        </li>
-                        <li>Send internal email notifications to our team when a new lead is submitted</li>
-                        <li>Improve website content, inventory presentation and customer experience</li>
-                        <li>Measure marketing performance and advertising campaigns</li>
-                        <li>Detect spam, abuse, fraud or suspicious activity</li>
-                        <li>Maintain business records related to customer requests</li>
-                    </ul>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Email notifications and lead storage</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        When you submit a form on this website, your request may be saved in our website system and sent
-                        by
-                        email to {{ config('site.name') }} so our team can respond. These notifications may include your
-                        contact details, message, requested equipment, source page, IP address, user agent and campaign
-                        data.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        We use this information only for business communication, customer support, lead management and
-                        related
-                        operational purposes.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Cookies and tracking technologies</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        This website may use cookies, pixels, analytics tools and similar technologies to understand how
-                        visitors
-                        use the site, measure advertising performance and improve customer communication.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        Cookies may help us remember technical information, connect a form submission to a marketing
-                        campaign,
-                        or measure whether a visitor viewed inventory, clicked a contact button, or submitted a lead
-                        form.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        You can usually control or disable cookies through your browser settings. Some website features
-                        or
-                        advertising measurement tools may not work as intended if cookies are disabled.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Meta Pixel and Conversions API</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        This website may use Meta Pixel and Meta Conversions API to measure advertising performance,
-                        improve
-                        campaign reporting and understand actions such as page views, product views, contact clicks and
-                        lead
-                        form submissions.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        When these tools are active, certain event data may be sent to Meta, such as event name, event
-                        time,
-                        page URL, browser identifiers, IP address, user agent and hashed contact information where
-                        applicable.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        Meta may process this information according to its own privacy policies and advertising
-                        settings.
-                        You can manage advertising preferences through your Meta account settings and browser privacy
-                        controls.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Sharing information</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        We do not sell your personal information. We may share information only when needed to operate
-                        the
-                        website, respond to your request, support business operations, use service providers, comply
-                        with law,
-                        prevent abuse, or measure advertising and analytics performance.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        Service providers may include website hosting, email delivery, analytics, advertising, security,
-                        customer communication and technical support providers.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Data security</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        We use reasonable technical and organizational measures to protect information submitted through
-                        this
-                        website. However, no method of internet transmission or electronic storage is completely secure.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        Please do not submit sensitive financial information, passwords, payment card details, or other
-                        highly
-                        sensitive information through general contact or quote request forms.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Data retention</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        We may retain submitted lead information and related technical data for as long as reasonably
-                        necessary
-                        to respond to requests, manage customer communication, maintain business records, improve the
-                        website,
-                        comply with legal obligations, and protect our business interests.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Your choices</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        You may contact us to request that we update, correct or delete information you previously
-                        submitted,
-                        subject to legal, operational and recordkeeping requirements.
-                    </p>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        You may also control cookies and tracking technologies through your browser settings and
-                        advertising
-                        platform settings.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Changes to this policy</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        We may update this Privacy Policy from time to time. Updates will be posted on this page with
-                        the
-                        latest version of the policy.
-                    </p>
-                </div>
-
-                <div class="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-                    <h2 class="text-2xl font-bold">Contact us</h2>
-
-                    <p class="mt-4 leading-7 text-slate-600">
-                        If you have questions about this Privacy Policy or how your information is handled, contact
-                        {{ config('site.name') }}:
-                    </p>
-
-                    <div class="mt-5 space-y-2 text-slate-700">
-                        <p>
-                            <strong>Address:</strong>
-                            @include('front.components.contact.address-link', [
-                                'class' => 'text-green-700 hover:text-green-800',
-                            ])
-                        </p>
-
-                        <p>
-                            <strong>Phone:</strong>
-                            <a href="tel:{{ config('site.phone_tel') }}" class="text-green-700 hover:text-green-800">
-                                {{ config('site.phone') }}
-                            </a>
-                        </p>
-
-                        <p>
-                            <strong>Email:</strong>
-                            <a href="mailto:{{ config('site.email') }}" class="text-green-700 hover:text-green-800">
-                                {{ config('site.email') }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <aside class="h-fit rounded-3xl bg-slate-900 p-6 text-white shadow-sm">
-                <h2 class="text-xl font-bold">Privacy questions?</h2>
-
-                <p class="mt-3 text-sm leading-6 text-slate-300">
-                    Contact {{ config('site.name') }} if you have questions about your information, quote requests,
-                    lead forms or website tracking.
-                </p>
-
-                <div class="mt-6 space-y-3">
-                    <a href="tel:{{ config('site.phone_tel') }}"
-                       class="block rounded-xl bg-green-600 px-5 py-3 text-center text-sm font-bold hover:bg-green-700">
-                        Call {{ config('site.phone') }}
-                    </a>
-
-                    <a href="mailto:{{ config('site.email') }}"
-                       class="block rounded-xl bg-white px-5 py-3 text-center text-sm font-bold text-slate-900 hover:bg-slate-100">
-                        Email {{ config('site.email') }}
-                    </a>
-
-                    <a href="{{ route('contact.index') }}"
-                       class="block rounded-xl border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">
-                        Contact us
-                    </a>
-                </div>
-
-                <div class="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-6 text-slate-200">
-                    <div class="font-bold text-white">Dealer</div>
-                    <div class="mt-1">{{ config('site.name') }}</div>
-                    @include('front.components.contact.address-link', [
-                        'class' => 'mt-1 inline-block hover:text-green-700',
-                    ])
-                </div>
-            </aside>
+    <div class="legal-page">
+        <div class="site-container legal-layout">
+            @include('front.components.legal.toc', ['items' => $toc])
+            <article class="legal-content">
+                <section id="introduction" class="legal-section"><span class="legal-section__number">01</span><h2>Introduction</h2><p>Moore's Farm Equipment respects the privacy of visitors to our website. This Privacy Policy describes the types of information we may receive through the website, how that information may be used, and the choices available to visitors.</p><p>This policy applies to information collected through this website, including information submitted through contact, quote, and equipment inquiry forms.</p></section>
+                <section id="information-we-collect" class="legal-section"><span class="legal-section__number">02</span><h2>Information We Collect</h2><p>Depending on how you use the website, we may receive information you submit directly, technical information about a visit, and information associated with a form request or campaign link.</p><ul><li>Contact details and message content submitted through a form.</li><li>Information about equipment or listings included in an inquiry or quote request.</li><li>Technical and request information used to operate, secure, and understand the website.</li></ul></section>
+                <section id="information-you-provide" class="legal-section"><span class="legal-section__number">03</span><h2>Information You Provide</h2><p>When you contact us through the website, we may receive your name, phone number, email address, ZIP code, preferred contact method, subject, message, and information about the equipment you are asking about.</p><p>Some fields are required to submit a particular form. You can choose whether to include optional information, such as an email address or additional message details.</p></section>
+                <section id="automatic-information" class="legal-section"><span class="legal-section__number">04</span><h2>Automatically Collected Information</h2><p>Website requests may include basic technical information such as your IP address, browser and device information, user agent, requested pages, date and time of requests, referring page, and the page associated with a submission.</p><p>Forms may also receive campaign parameters such as UTM values. When the applicable tracking configuration is enabled, the website may receive Meta browser or click identifiers, including values associated with <code>_fbp</code>, <code>_fbc</code>, or a <code>fbclid</code> parameter.</p></section>
+                <section id="how-we-use-information" class="legal-section"><span class="legal-section__number">05</span><h2>How We Use Information</h2><p>We may use information to:</p><ul><li>Respond to questions and website inquiries.</li><li>Communicate about equipment listings and quote requests.</li><li>Process and route contact form submissions.</li><li>Send an internal notification when a new lead is submitted.</li><li>Maintain website security and help prevent spam or abuse.</li><li>Understand technical problems and operate the website.</li><li>Maintain business records related to requests and communications.</li><li>Meet applicable legal or business requirements.</li></ul></section>
+                <section id="cookies-and-similar-technologies" class="legal-section"><span class="legal-section__number">06</span><h2>Cookies and Similar Technologies</h2><p>The website may use cookies or similar browser technologies that are necessary for basic website functionality, security, session management, or form processing. Laravel session and CSRF protections may rely on browser cookies.</p><p>If Meta Pixel is enabled in the website configuration, the site may load Meta Pixel to record page views and, after applicable form activity, lead-related events. The website may use browser identifiers or campaign information for that measurement. Meta handles information it receives according to its own policies.</p><p>You can control cookies through your browser settings. Disabling cookies may affect session-based or form-related website functionality.</p></section>
+                <section id="how-we-share-information" class="legal-section"><span class="legal-section__number">07</span><h2>How We Share Information</h2><p>We do not sell personal information collected through this website. We may share information where reasonably necessary with service providers that help us host the website, deliver email, maintain security, process communications, or support the operation of the website.</p><p>We may also disclose information when reasonably necessary to comply with law, respond to a lawful request, protect rights or safety, investigate abuse, or support a business change such as a merger or asset transfer.</p><p>If Meta Pixel or Meta Conversions API is enabled, relevant event and contact information may be sent to Meta for the configured measurement and lead functions.</p></section>
+                <section id="third-party-links-and-services" class="legal-section"><span class="legal-section__number">08</span><h2>Third-Party Links and Services</h2><p>The website may link to third-party websites, including mapping or equipment-related resources. Those websites operate under their own terms and privacy practices. Moore's Farm Equipment does not control and is not responsible for the privacy practices or content of external websites.</p></section>
+                <section id="data-security" class="legal-section"><span class="legal-section__number">09</span><h2>Data Security</h2><p>We use reasonable administrative and technical measures designed to protect information handled through the website. However, no method of internet transmission or electronic storage can be guaranteed to be completely secure.</p><p>Please do not submit passwords, payment card details, government identification numbers, or other highly sensitive information through a general website form.</p></section>
+                <section id="data-retention" class="legal-section"><span class="legal-section__number">10</span><h2>Data Retention</h2><p>We may retain information for as long as reasonably necessary to respond to inquiries, maintain business records, resolve disputes, protect the website, and meet applicable legal or business requirements.</p></section>
+                <section id="your-choices" class="legal-section"><span class="legal-section__number">11</span><h2>Your Choices</h2><p>You may contact us to ask about information you previously submitted through the website or to request that it be updated, corrected, or deleted, subject to applicable legal, operational, and recordkeeping requirements.</p><p>You may also manage browser cookies and available Meta advertising controls through your browser or Meta account settings.</p></section>
+                <section id="childrens-privacy" class="legal-section"><span class="legal-section__number">12</span><h2>Children's Privacy</h2><p>This website is intended for a general audience and is not directed to children under 13. We do not knowingly seek to collect personal information from children through this website.</p></section>
+                <section id="changes-to-this-policy" class="legal-section"><span class="legal-section__number">13</span><h2>Changes to This Policy</h2><p>We may update this Privacy Policy from time to time. When it is updated, the revised version will be posted on this page with a new “Last Updated” date.</p></section>
+                <section id="contact-us" class="legal-section"><span class="legal-section__number">14</span><h2>Contact Us</h2><p>If you have questions about this Privacy Policy or how information is handled, contact Moore's Farm Equipment.</p><div class="legal-contact-details"><strong>{{ config('site.name') }}</strong><address>{{ config('site.contact.address') }}</address><a href="tel:{{ config('site.contact.phone_tel') }}">{{ config('site.contact.phone') }}</a><a href="mailto:{{ config('site.contact.email') }}">{{ config('site.contact.email') }}</a></div></section>
+            </article>
         </div>
-    </section>
+    </div>
+
+    @include('front.components.legal.contact-block')
 @endsection

@@ -153,6 +153,14 @@ Create storage symlink:
 php artisan storage:link
 ```
 
+Generate product image derivatives (`medium_*.webp` and `thumb_*.webp`):
+
+```bash
+php artisan inventory:generate-images
+```
+
+Use `--force` to recreate existing derivatives.
+
 ---
 
 ## Running the Project

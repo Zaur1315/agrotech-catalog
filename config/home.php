@@ -46,8 +46,8 @@ return [
         'eyebrow' => "Why Moore's Farm Equipment",
         'title' => 'Straightforward Equipment Buying',
         'description' => 'Browse available equipment, review the details, and contact our team when you are ready to learn more.',
-        'image' => 'images/home/sections/tractor-detail.webp',
-        'image_alt' => 'Close view of agricultural equipment',
+        'image' => 'images/home/sections/why-moores.webp',
+        'image_alt' => 'Agricultural tractor in a rural equipment yard',
         'items' => [
             ['title' => 'Practical Equipment Selection', 'description' => 'Explore equipment for agricultural, construction, utility, and commercial applications.'],
             ['title' => 'Clear Listing Information', 'description' => 'Review available photos, specifications, pricing, and listing details before contacting us.'],
@@ -59,9 +59,9 @@ return [
         'eyebrow' => 'Equipment for the Work You Do',
         'title' => 'Built Around Real-World Jobs',
         'items' => [
-            ['title' => 'Farm Equipment', 'description' => 'Equipment for field work, property maintenance, material handling, and daily farm operations.', 'image' => 'images/home/applications/farm-equipment.webp', 'image_alt' => 'Tractor operating on farmland'],
-            ['title' => 'Construction Equipment', 'description' => 'Machines for excavation, loading, grading, site preparation, and construction work.', 'image' => 'images/home/applications/construction-equipment.webp', 'image_alt' => 'Construction equipment on a job site'],
-            ['title' => 'Utility & Attachments', 'description' => 'Versatile equipment and attachments for property, landscaping, and commercial projects.', 'image' => 'images/home/applications/utility-equipment.webp', 'image_alt' => 'Compact utility equipment with attachment'],
+            ['title' => 'Farm Equipment', 'description' => 'Equipment for field work, property maintenance, material handling, and daily farm operations.', 'image' => 'images/home/applications/farm-equipment-v2.webp', 'image_alt' => 'Tractor working across farmland'],
+            ['title' => 'Construction Equipment', 'description' => 'Machines for excavation, loading, grading, site preparation, and construction work.', 'image' => 'images/home/applications/construction-equipment-v2.webp', 'image_alt' => 'Excavator and loader working on a construction site'],
+            ['title' => 'Utility & Attachments', 'description' => 'Versatile equipment and attachments for property, landscaping, and commercial projects.', 'image' => 'images/home/applications/utility-attachments.webp', 'image_alt' => 'Compact skid-steer loader with attachment beside a barn'],
         ],
     ],
     'process' => [
@@ -86,8 +86,8 @@ return [
     'faq' => [
         'eyebrow' => 'Frequently Asked Questions',
         'title' => 'Questions Before You Contact Us?',
-        'image' => 'images/home/sections/tractor-detail.webp',
-        'image_alt' => 'Agricultural tractor detail',
+        'image' => 'images/home/sections/faq-tractor-cab.webp',
+        'image_alt' => 'Tractor cab and controls in an equipment yard',
         'items' => [
             ['question' => 'How can I ask about a specific machine?', 'answer' => 'Open the equipment listing and use the available inquiry option, or contact us by phone or email with the listing name.'],
             ['question' => "Where is Moore's Farm Equipment located?", 'answer' => 'We are located at 1410 S Water Ave, Gallatin, TN 37066, USA.'],
@@ -100,7 +100,7 @@ return [
         'eyebrow' => 'Start Your Equipment Search',
         'title' => 'See What Is Available Today',
         'description' => "Browse our current equipment listings or contact the Moore's Farm Equipment team in Gallatin.",
-        'background_image' => 'images/home/sections/tractor-sunset.webp',
+        'background_image' => 'images/home/sections/available-today.webp',
         'primary_cta_label' => 'View Inventory',
         'primary_cta_route' => 'catalog.index',
         'secondary_cta_label' => 'Call +1 615 452 6099',

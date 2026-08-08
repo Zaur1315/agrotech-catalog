@@ -17,9 +17,9 @@
 @endpush
 
 @section('content')
-    <div class="product-page">
+    <div class="product-page" x-data="{ inquiryOpen: false }" @keydown.escape.window="inquiryOpen = false" x-effect="document.body.classList.toggle('overflow-hidden', inquiryOpen)">
         <div class="site-container product-breadcrumbs">@include('front.components.breadcrumbs', ['items' => $breadcrumbItems])</div>
-        <main class="section-shell product-main">
+        <div class="section-shell product-main">
             <div class="site-container">
                 <div class="product-layout">
                     <div><div class="product-gallery-wrap">@include('front.components.inventory.gallery', ['product' => $product])</div></div>
@@ -35,11 +35,20 @@
                                 @if($product->location)<span>{{ $product->location }}</span>@endif
                             </div>
                             @include('front.components.inventory.summary', ['product' => $product])
-                            @if($product->status === \App\Models\Product::STATUS_AVAILABLE)<a class="btn-primary product-summary__cta" href="#inquiry">Send an Inquiry</a>@else<a class="btn-primary product-summary__cta" href="{{ route('contact.index') }}">Contact Our Team</a>@endif
+                            @if($product->status === \App\Models\Product::STATUS_AVAILABLE)<button type="button" class="btn-primary product-summary__cta" @click="inquiryOpen = true; $nextTick(() => $refs.inquiryClose?.focus())">Send an Inquiry</button>@else<a class="btn-primary product-summary__cta" href="{{ route('contact.index') }}">Contact Our Team</a>@endif
                         </div>
-                        <div class="product-inquiry-desktop">@include('front.components.inventory.inquiry-panel', ['product' => $product, 'content' => config('inventory.show')])</div>
                     </div>
                 </div>
+
+                @if($product->status === \App\Models\Product::STATUS_AVAILABLE)
+                    <div x-cloak x-show="inquiryOpen" x-transition.opacity class="inquiry-modal" role="dialog" aria-modal="true" aria-labelledby="inquiry-modal-title" @click.self="inquiryOpen = false">
+                        <div class="inquiry-modal__panel" @click.stop>
+                            <button type="button" class="gallery-control inquiry-modal__close" x-ref="inquiryClose" @click="inquiryOpen = false" aria-label="Close inquiry form">×</button>
+                            <div id="inquiry-modal-title" class="sr-only">Equipment inquiry</div>
+                            @include('front.components.inventory.inquiry-panel', ['product' => $product, 'content' => config('inventory.show')])
+                        </div>
+                    </div>
+                @endif
 
                 <div class="product-content-grid">
                     <div class="product-content-column">
@@ -51,9 +60,9 @@
                     <div class="product-content-aside"><div class="product-contact-band"><p class="section-eyebrow section-eyebrow--gold">Questions about this machine?</p><h2>Talk with Moore's Farm Equipment.</h2><a class="btn-primary" href="tel:{{ config('site.contact.phone_tel') }}">Call {{ config('site.contact.phone') }}</a></div></div>
                 </div>
             </div>
-        </main>
+        </div>
         @include('front.components.inventory.related-equipment', ['products' => $relatedProducts, 'content' => config('inventory.show')])
-        @if($product->status === \App\Models\Product::STATUS_AVAILABLE)<div class="product-mobile-bar"><a href="tel:{{ config('site.contact.phone_tel') }}">Call Now</a><a href="#inquiry">Inquire</a></div>@endif
+        @if($product->status === \App\Models\Product::STATUS_AVAILABLE)<div class="product-mobile-bar"><a href="tel:{{ config('site.contact.phone_tel') }}">Call Now</a><button type="button" @click="inquiryOpen = true; $nextTick(() => $refs.inquiryClose?.focus())">Inquire</button></div>@endif
     </div>
 
     @push('meta_pixel_events')

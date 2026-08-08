@@ -7,7 +7,7 @@
 @section('content')
     @include('front.components.inventory.hero', ['content' => config('inventory.index')])
 
-    <main class="section-shell inventory-page" x-data="{ open: false }" @open-inventory-filters.window="open = true" @keydown.escape.window="open = false" x-effect="document.body.classList.toggle('overflow-hidden', open)">
+    <div class="section-shell inventory-page" x-data="{ open: false }" @open-inventory-filters.window="open = true" @keydown.escape.window="open = false" x-effect="document.body.classList.toggle('overflow-hidden', open)">
         <div class="site-container">
             <div class="inventory-toolbar">
                 <div><p class="section-eyebrow">Available Equipment</p><h2 class="section-title">Browse current inventory</h2><p class="inventory-results">{{ $products->total() }} {{ Str::plural('item', $products->total()) }}</p></div>
@@ -45,7 +45,7 @@
                                 @include('front.components.inventory.empty-state', ['content' => config('inventory.empty_state'), 'clearUrl' => $currentCategory ? route('catalog.category', $currentCategory) : route('catalog.index')])
                             @endforelse
                         </div>
-                        @if($products->hasPages())<div class="inventory-pagination">{{ $products->links() }}</div>@endif
+                        @if($products->hasPages())<div class="inventory-pagination">{{ $products->links('front.components.inventory.pagination') }}</div>@endif
                     </div>
             </div>
 
@@ -57,7 +57,7 @@
                     </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <section class="inventory-cta" data-reveal><div class="site-container inventory-cta__inner"><div><p class="section-eyebrow section-eyebrow--gold">Need help finding the right equipment?</p><h2>Call or email our team.</h2><p>Discuss the type of machine you are looking for with Moore's Farm Equipment.</p></div><div class="home-hero__actions"><a class="btn-primary" href="tel:{{ config('site.contact.phone_tel') }}">Call {{ config('site.contact.phone') }}</a><a class="btn-outline btn-outline--light" href="{{ route('contact.index') }}">Contact Us</a></div></div></section>
 @endsection
